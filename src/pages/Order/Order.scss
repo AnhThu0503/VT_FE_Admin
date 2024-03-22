@@ -1,0 +1,25 @@
+.received-voucher {
+    background-color: rgba(150, 149, 149, 0.537);
+    color: rgb(0, 0, 0);
+    padding: 5px;
+}
+
+.container-order {
+    .title-primary {
+        font-weight: 400;
+        font-size: 2em;
+        font-family: inherit;
+        color: #333;
+        text-transform: uppercase;
+    }
+
+    .btn-bill {
+        background-color: #ff4d00;
+        color: #fff;
+
+        &:hover {
+            background-color: #e44400;
+            color: #fff;
+        }
+    }
+}

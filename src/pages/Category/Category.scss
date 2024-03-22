@@ -1,0 +1,21 @@
+.container-category {
+    .title-primary {
+        font-weight: 400;
+        font-size: 2em;
+        font-family: inherit;
+        color: #333;
+        text-transform: uppercase;
+    }
+
+    .btn-upload-category {
+        background-color: #ff4d00;
+        color: #fff;
+        border: none;
+        border-radius: none;
+
+        &:hover {
+            color: #ff4d00 !important;
+            border: 1px solid #ff4d00 !important;
+        }
+    }
+}
