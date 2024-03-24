@@ -68,8 +68,8 @@ const Product = () => {
       sorter: (a, b) => a.priceStart - b.priceStart,
     },
     {
-      title: "GIÁ GIẢM",
-      dataIndex: "priceDiscount",
+      title: "GIÁ BÁN",
+      dataIndex: "thoigia",
       sorter: (a, b) => a.priceDiscount - b.priceDiscount,
     },
     {
@@ -93,7 +93,9 @@ const Product = () => {
       ),
     },
   ];
+
   // ProductUpdate
+
   const getAllProduct = async () => {
     try {
       const response = await axios.get("/api/admin/product");
@@ -102,8 +104,14 @@ const Product = () => {
         index: index + 1,
         name: item.SP_ten,
         quantity: item.SP_soLuong,
-        priceStart: item.G_giaBanDau,
-        priceDiscount: item.G_thoiGia,
+        priceStart: item.G_giaBanDau.toLocaleString("vi", {
+          style: "currency",
+          currency: "VND",
+        }),
+        thoigia: item.G_thoiGia.toLocaleString("vi", {
+          style: "currency",
+          currency: "VND",
+        }),
       }));
       setData(formattedData);
     } catch (error) {

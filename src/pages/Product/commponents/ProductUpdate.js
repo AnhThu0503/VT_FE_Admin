@@ -35,7 +35,7 @@ const ProductUpdate = () => {
           SP_soLuong: response.data.product[0].SP_soLuong,
           SP_HSD: formatDate(response.data.product[0].SP_HSD),
           SP_NSX: formatDate(response.data.product[0].SP_NSX),
-          G_giaBanDau: response.data.price[0].G_giaBanDau,
+          G_thoiGia: response.data.price[0].G_thoiGia,
           SP_trongLuong: response.data.product[0].SP_trongLuong,
           SP_donViTinh: response.data.product[0].SP_donViTinh,
           SP_moTa: response.data.product[0].SP_moTa,
@@ -62,7 +62,7 @@ const ProductUpdate = () => {
         SP_HSD: values.SP_HSD,
         SP_trongLuong: values.SP_trongLuong,
         SP_moTa: values.SP_moTa,
-        G_giaBanDau: values.G_giaBanDau,
+        G_thoiGia: values.G_thoiGia,
       });
       console.log(response);
       if (response.data) {
@@ -129,7 +129,7 @@ const ProductUpdate = () => {
           </Form.Item>
           <Form.Item
             label="Giá bán"
-            name="G_giaBanDau"
+            name="G_thoiGia"
             rules={[
               {
                 required: true,

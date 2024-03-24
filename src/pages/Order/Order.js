@@ -3,9 +3,12 @@ import "./Order.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { notification } from "antd";
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
 const key = "updatable";
 
 function Order() {
+  const componentPDF = useRef();
   const [orders, setOrders] = useState([]);
   const [user, setUser] = useState({});
   const [order, setOrder] = useState({});
@@ -23,7 +26,6 @@ function Order() {
 
       let arrtmp = [];
       response.data.forEach((data) => {
-        console.log(data);
         arrtmp.push({
           DH_id: data.order.DH_id,
           index: data.order.DH_id,
@@ -71,6 +73,10 @@ function Order() {
       console.log(error);
     }
   };
+
+  const handleOpenPDF = useReactToPrint({
+    content: () => componentPDF.current,
+  });
 
   const columns = [
     {
@@ -165,7 +171,7 @@ function Order() {
             onClick={() => {
               console.log(record);
               setIsModalOrderOpen(true);
-              setOrder(record.DonHangCT);
+              setOrder(record);
             }}
           >
             Xem thêm
@@ -174,6 +180,7 @@ function Order() {
       ),
     },
   ];
+
   const showModal = (record) => {
     setIsModalOpen(true);
     setUser({
@@ -182,10 +189,12 @@ function Order() {
       sdt: record.chiTietKH.ND_SDT,
     });
   };
+
   const handleOk = () => {
     setIsModalOpen(false);
     setIsModalOrderOpen(false);
   };
+
   const handleCancel = () => {
     setIsModalOrderOpen(false);
     setIsModalOpen(false);
@@ -196,6 +205,7 @@ function Order() {
       {contextHolder}
       <div className="text-center title-primary pb-4">Quản lý đơn hàng</div>
       <Table columns={columns} dataSource={orders} />
+
       <Modal
         title="Thông tin khách hàng"
         open={isModalOpen}
@@ -216,22 +226,31 @@ function Order() {
         open={isModalOrderOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        footer={() => <Button onClick={handleOpenPDF}>In hóa đơn</Button>}
       >
-        {order &&
-          order.length >= 0 &&
-          order.map((item, index) => {
-            console.log(item[0].SP_ten);
-            return (
-              <div key={index} className="mb-3">
-                <div>Tên sản phẩm: {item[0].SP_ten}</div>
-                <div>
-                  Chi tiết sản pẩm: {item[0].SP_trongLuong}
-                  {item[0].SP_donViTinh}
+        <div ref={componentPDF}>
+          {order.chiTietKH && (
+            <>
+              <div>Tên khách hàng: {order.chiTietKH.ND_ten}</div>
+              <div style={{ marginTop: "3px" }}>{order.chiTietKH.ND_email}</div>
+            </>
+          )}
+          {order.DonHangCT &&
+            order.DonHangCT.length >= 0 &&
+            order.DonHangCT.map((item, index) => {
+              console.log(item[0].SP_ten);
+              return (
+                <div key={index} className="mb-3">
+                  <div>Tên sản phẩm: {item[0].SP_ten}</div>
+                  <div>
+                    Chi tiết sản pẩm: {item[0].SP_trongLuong}
+                    {item[0].SP_donViTinh}
+                  </div>
+                  <div>Số lượng: {item.soluong}</div>
                 </div>
-                <div>Số lượng: {item.soluong}</div>
-              </div>
-            );
-          })}
+              );
+            })}
+        </div>
       </Modal>
     </div>
   );
