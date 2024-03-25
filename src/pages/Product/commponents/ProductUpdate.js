@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import "./OrderN.scss";
 import axios from "axios";
@@ -22,6 +22,7 @@ const ProductUpdate = () => {
   const [form] = Form.useForm();
   const [product, setProduct] = useState([]);
   const [api, contextHolder] = notification.useNotification();
+  const navigation = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -70,6 +71,7 @@ const ProductUpdate = () => {
           key,
           message: "Cập nhật thông tin thành công",
         });
+        navigation("/product");
       } else {
         api.open({
           key,

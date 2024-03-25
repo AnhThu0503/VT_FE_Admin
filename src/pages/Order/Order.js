@@ -127,16 +127,20 @@ function Order() {
               label: "Chờ xác nhận",
             },
             {
-              value: "Đang chuẩn bị",
-              label: "Đang chẩn bị",
+              value: "Đang xử lý",
+              label: "Đang xử lý",
             },
             {
               value: "Đang vận chuyển",
               label: "Đang vận chuyển",
             },
             {
-              value: "Đã giao hàng",
-              label: "Đã giao hàng",
+              value: "Đã nhận hàng",
+              label: "Đã nhận hàng",
+            },
+            {
+              value: "Hủy đơn hàng",
+              label: "Hủy đơn hàng",
             },
           ]}
         />
@@ -147,21 +151,26 @@ function Order() {
           value: "Chờ xác nhận",
         },
         {
-          text: "Đang chuẩn bị",
-          value: "Đang chuẩn bị",
+          text: "Đang xử lý",
+          value: "Đang xử lý",
         },
         {
           text: "Đang vận chuyển",
           value: "Đang vận chuyển",
         },
         {
-          text: "Đã giao",
-          value: "Đã giao hàng",
+          text: "Đã nhận hàng", // Fixed text to match options
+          value: "Đã nhận hàng",
+        },
+        {
+          text: "Hủy đơn hàng",
+          value: "Hủy đơn hàng",
         },
       ],
       filterSearch: true,
-      onFilter: (value, record) => record.state === value,
+      onFilter: (value, record) => record.DH_trangThai === value,
     },
+
     {
       title: "Xem chi tiết ĐH",
       dataIndex: "DonHangCT",
