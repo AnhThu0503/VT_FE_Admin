@@ -26,15 +26,19 @@ function Order() {
 
       let arrtmp = [];
       response.data.forEach((data) => {
-        arrtmp.push({
-          DH_id: data.order.DH_id,
-          index: data.order.DH_id,
-          DH_trangThai: data.order.DH_trangThai,
-          ND_diaChi: data.user[0].ND_diaChi,
-          chiTietKH: data.user[0],
-          DH_ngayDat: formatDate(data.order.DH_ngayDat),
-          DonHangCT: data.detailOrderProduct,
-        });
+        arrtmp = [
+          ...arrtmp, // Spread the current items in arrtmp
+          {
+            DH_id: data.order.DH_id,
+            key: data.order.DH_id,
+            index: data.order.DH_id,
+            DH_trangThai: data.order.DH_trangThai,
+            ND_diaChi: data.user[0].ND_diaChi,
+            chiTietKH: data.user[0],
+            DH_ngayDat: formatDate(data.order.DH_ngayDat),
+            DonHangCT: data.detailOrderProduct,
+          },
+        ];
       });
       setOrders(arrtmp);
     } catch (error) {
@@ -82,15 +86,18 @@ function Order() {
     {
       title: "STT",
       dataIndex: "index",
+      key: "index",
     },
 
     {
       title: "Địa chỉ",
       dataIndex: "ND_diaChi",
+      key: "ND_diaChi",
     },
     {
       title: "Xem chi tiết KH",
       dataIndex: "chiTietKH",
+      key: "chiTietKH",
       render: (_, record) => {
         return (
           <div>
@@ -108,73 +115,68 @@ function Order() {
     {
       title: "Ngày đặt",
       dataIndex: "DH_ngayDat",
+      key: "DH_ngayDat",
     },
     {
       title: "Trạng thái",
       dataIndex: "DH_trangThai",
-      render: (text, record) => (
-        <Select
-          defaultValue={record.DH_trangThai}
-          style={{
-            width: 150,
-          }}
-          onChange={(e) => {
-            handleChange(e, record);
-          }}
-          options={[
-            {
-              value: "Chờ xác nhận",
-              label: "Chờ xác nhận",
-            },
-            {
-              value: "Đang xử lý",
-              label: "Đang xử lý",
-            },
-            {
-              value: "Đang vận chuyển",
-              label: "Đang vận chuyển",
-            },
-            {
-              value: "Đã nhận hàng",
-              label: "Đã nhận hàng",
-            },
-            {
-              value: "Hủy đơn hàng",
-              label: "Hủy đơn hàng",
-            },
-          ]}
-        />
-      ),
+      key: "DH_trangThai",
+      // render: (_, record) => {
+      //   console.log("record", record);
+      //   return (
+      //     <Select
+      //       defaultValue={record.DH_trangThai}
+      //       style={{ width: 150 }}
+      //       onChange={(e) => handleChange(e, record)}
+      //       options={[
+      //         { value: "Chờ xác nhận", label: "Chờ xác nhận" },
+      //         { value: "Đang xử lý", label: "Đang xử lý" },
+      //         { value: "Đã nhận hàng", label: "Đã nhận hàng" },
+      //         { value: "Hủy đơn hàng", label: "Hủy đơn hàng" },
+      //       ]}
+      //     />
+      //   );
+      // },
+      render: (_, record) => {
+        console.log(record);
+        return (
+          <Select
+            defaultValue={record.DH_trangThai}
+            style={{
+              minWidth: 140,
+            }}
+            onChange={(value) => {
+              handleChange(value, record);
+            }}
+            // disabled={handleDisableSelect(record.status)}
+            options={[
+              { value: "Chờ xác nhận", label: "Chờ xác nhận" },
+              { value: "Đang xử lý", label: "Đang xử lý" },
+              { value: "Đã nhận hàng", label: "Đã nhận hàng" },
+              { value: "Hủy đơn hàng", label: "Hủy đơn hàng" },
+            ]}
+          />
+        );
+      },
       filters: [
-        {
-          text: "Chờ xác nhận",
-          value: "Chờ xác nhận",
-        },
-        {
-          text: "Đang xử lý",
-          value: "Đang xử lý",
-        },
-        {
-          text: "Đang vận chuyển",
-          value: "Đang vận chuyển",
-        },
-        {
-          text: "Đã nhận hàng", // Fixed text to match options
-          value: "Đã nhận hàng",
-        },
-        {
-          text: "Hủy đơn hàng",
-          value: "Hủy đơn hàng",
-        },
+        { text: "Đang xử lý", value: "Đang xử lý" },
+        { text: "Chờ xác nhận", value: "Chờ xác nhận" },
+        { text: "Đang vận chuyển", value: "Đang vận chuyển" },
+        { text: "Đã nhận hàng", value: "Đã nhận hàng" },
+        { text: "Hủy đơn hàng", value: "Hủy đơn hàng" },
       ],
-      filterSearch: true,
-      onFilter: (value, record) => record.DH_trangThai === value,
+      onFilter: (value, record) => {
+        console.log("FILTER value", value);
+        // console.log("FILTER", record.DH_trangThai.indexOf(value));
+        return record.DH_trangThai.indexOf(value) === 0;
+      },
     },
 
     {
       title: "Xem chi tiết ĐH",
       dataIndex: "DonHangCT",
-      render: (text, record) => (
+      key: "DonHangCT",
+      render: (_, record) => (
         <div>
           <Button
             onClick={() => {
@@ -208,12 +210,14 @@ function Order() {
     setIsModalOrderOpen(false);
     setIsModalOpen(false);
   };
-
+  const onChange = (pagination, filters, sorter, extra) => {
+    console.log("params", pagination, filters, sorter, extra);
+  };
   return (
     <div className="container-order">
       {contextHolder}
       <div className="text-center title-primary pb-4">Quản lý đơn hàng</div>
-      <Table columns={columns} dataSource={orders} />
+      <Table columns={columns} dataSource={orders} onChange={onChange} />
 
       <Modal
         title="Thông tin khách hàng"
