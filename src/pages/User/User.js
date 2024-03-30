@@ -1,12 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Table, Button, Input } from "antd";
+import { Table, Button, notification } from "antd";
 import "./User.scss";
-function User() {
+const key = "updatable";
+const User = () => {
   const [users, setUsers] = useState();
+  const [falg, setFalg] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+
   useEffect(() => {
     getAllUser();
-  }, []);
+  }, [falg]);
   const getAllUser = async () => {
     try {
       const response = await axios.get("/api/admin/users");
@@ -52,18 +56,58 @@ function User() {
         <div style={{ textAlign: "right" }}>
           {" "}
           <Button>Cập nhật</Button>
-          <Button className="mx-2" type="primary" danger ghost>
+          <Button
+            className="mx-2"
+            type="primary"
+            danger
+            ghost
+            onClick={() => deleteUser(record)}
+          >
             Xóa
           </Button>
         </div>
       ),
     },
   ];
+  const deleteUser = async (record) => {
+    try {
+      console.log(record);
+      // Make a DELETE request to your backend API endpoint
+      const response = await axios.delete(`/api/admin/user/delete`, {
+        params: {
+          ND_id: record.key,
+        },
+      });
+
+      // Check if the request was successful
+      if (response.status === 200) {
+        console.log("User deleted successfully");
+
+        setFalg(!falg);
+        api.open({
+          key,
+          type: "success",
+          message: "Xóa người dùng thành công!",
+        });
+      } else {
+        console.log("Failed to delete user");
+        // Optionally, you can return false to indicate failure
+        api.open({
+          key,
+          type: "error",
+          message: "Xóa người dùng thất bại!",
+        });
+      }
+    } catch (error) {
+      console.error("Error occurred while deleting user:", error);
+    }
+  };
   return (
     <div className="container-category">
+      {contextHolder}
       <div className="text-center title-primary pb-4">Quản lý người dùng</div>
       <Table columns={columns} dataSource={users} style={{}} />
     </div>
   );
-}
+};
 export default User;

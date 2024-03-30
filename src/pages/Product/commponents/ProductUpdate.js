@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import "./OrderN.scss";
+import "./ProductUpdate.scss";
 import axios from "axios";
 import { Button, notification, Form, Input } from "antd";
 const { TextArea } = Input;
@@ -21,6 +21,7 @@ const ProductUpdate = () => {
   const { id } = useParams();
   const [form] = Form.useForm();
   const [product, setProduct] = useState([]);
+
   const [api, contextHolder] = notification.useNotification();
   const navigation = useNavigate();
 
@@ -34,12 +35,13 @@ const ProductUpdate = () => {
         form.setFieldsValue({
           SP_ten: response.data.product[0].SP_ten,
           SP_soLuong: response.data.product[0].SP_soLuong,
-          SP_HSD: formatDate(response.data.product[0].SP_HSD),
-          SP_NSX: formatDate(response.data.product[0].SP_NSX),
+          SP_HSD: response.data.product[0].SP_HSD,
+          SP_NSX: response.data.product[0].SP_NSX,
           G_thoiGia: response.data.price[0].G_thoiGia,
           SP_trongLuong: response.data.product[0].SP_trongLuong,
           SP_donViTinh: response.data.product[0].SP_donViTinh,
           SP_moTa: response.data.product[0].SP_moTa,
+          DMSP_ten: response.data.category[0].DMSP_ten,
         });
       }
     })();
@@ -83,134 +85,159 @@ const ProductUpdate = () => {
     }
   };
   return (
-    <div className="container-upload pb-4">
+    <div className="container-upload pb-4 mt-4">
       {contextHolder}
       <div className="title-primary text-center">Cập nhật sản phẩm</div>
-      <div>
+      <div className="mt-4">
         <Form
+          className="col-sm-11 mx-auto"
           form={form}
           name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
-          style={{
-            maxWidth: 600,
-          }}
+          layout="vertical"
+          style={{}}
           initialValues={{
             remember: true,
           }}
           onFinish={updateProduct}
         >
-          <Form.Item
-            label="Tên sản phẩm"
-            name="SP_ten"
-            rules={[
-              {
-                required: true,
-                message: "Please input your username!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+          <div className="d-flex" style={{ justifyContent: "space-between" }}>
+            <Form.Item
+              label="Tên sản phẩm"
+              name="SP_ten"
+              className="col-sm-5"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng không để trống tên!",
+                },
+              ]}
+            >
+              <Input size="large" />
+            </Form.Item>
 
-          <Form.Item
-            label="Số lượng"
-            name="SP_soLuong"
-            rules={[
-              {
-                required: true,
-                message: "Please input your password!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Giá bán"
-            name="G_thoiGia"
-            rules={[
-              {
-                required: true,
-                message: "Please input your password!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+            <Form.Item
+              className="col-sm-5"
+              label="Danh mục sản phẩm"
+              name="DMSP_ten"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng không để trống danh mục sản phẩm!",
+                },
+              ]}
+            >
+              <Input disabled size="large" />
+            </Form.Item>
+          </div>
+          <div className="d-flex" style={{ justifyContent: "space-between" }}>
+            <Form.Item
+              label="Giá bán"
+              name="G_thoiGia"
+              className="col-sm-5"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng không để trống giá bán!",
+                },
+              ]}
+            >
+              <Input size="large" />
+            </Form.Item>
 
-          <Form.Item
-            label="Ngày sản xuất"
-            name="SP_NSX"
-            rules={[
-              {
-                required: true,
-                message: "Please input your password!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Hạn sử dụng"
-            name="SP_HSD"
-            rules={[
-              {
-                required: true,
-                message: "Please input your password!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Trọng lượng"
-            name="SP_trongLuong"
-            rules={[
-              {
-                required: true,
-                message: "Please input your password!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Đơn vị tính"
-            name="SP_donViTinh"
-            rules={[
-              {
-                required: true,
-                message: "Please input your password!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+            <Form.Item
+              label="Số lượng"
+              name="SP_soLuong"
+              className="col-sm-5"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng không để trống số lượng!",
+                },
+              ]}
+            >
+              <Input size="large" />
+            </Form.Item>
+          </div>
+          <div className="d-flex" style={{ justifyContent: "space-between" }}>
+            <Form.Item
+              label="Ngày sản xuất"
+              name="SP_NSX"
+              className="col-sm-5"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng không để trống ngày sản xuất!",
+                },
+              ]}
+            >
+              <Input size="large" />
+            </Form.Item>
+            <Form.Item
+              label="Hạn sử dụng"
+              name="SP_HSD"
+              className="col-sm-5"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng không để trống hạn sử dụng!",
+                },
+              ]}
+            >
+              <Input size="large" />
+            </Form.Item>
+          </div>
+          <div className="d-flex" style={{ justifyContent: "space-between" }}>
+            <Form.Item
+              label="Trọng lượng"
+              name="SP_trongLuong"
+              className="col-sm-5"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng không để trống trọng lượng!",
+                },
+              ]}
+            >
+              <Input size="large" />
+            </Form.Item>
+
+            <Form.Item
+              label="Đơn vị tính"
+              name="SP_donViTinh"
+              className="col-sm-5"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng không để trống đơn vị tính!",
+                },
+              ]}
+            >
+              <Input size="large" />
+            </Form.Item>
+          </div>
           <Form.Item
             label="Mô tả"
             name="SP_moTa"
             rules={[
               {
                 required: true,
-                message: "Please input your password!",
+                message: "Vui lòng không để trống mô tả!",
               },
             ]}
           >
-            <TextArea />
+            <TextArea size="large" rows={3} />
           </Form.Item>
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
+          <Form.Item>
+            <div className="text-end">
+              <Button
+                size="large"
+                type="primary"
+                htmlType="submit"
+                className="btn-upload-product"
+              >
+                Lưu
+              </Button>
+            </div>
           </Form.Item>
         </Form>
       </div>

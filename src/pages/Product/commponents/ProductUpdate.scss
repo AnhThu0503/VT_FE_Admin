@@ -1,4 +1,11 @@
 .container-upload {
+    label{
+        font-weight: 400;
+        font-size: 1.5em;
+        font-family: inherit;
+        color: #333;
+        text-transform: uppercase;
+    }
     .title-primary {
         font-weight: 400;
         font-size: 2em;
@@ -42,8 +49,8 @@
         border-radius: none;
 
         &:hover {
-            background-color: #e44400;
-            color: #fff;
+            background-color: #e44400 !important;
+            color: #fff !important;
         }
     }
 }

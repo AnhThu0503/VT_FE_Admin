@@ -1,0 +1,25 @@
+.container-home {
+    .title-primary {
+        font-weight: 400;
+        font-size: 2em;
+        font-family: inherit;
+        color: #333;
+        text-transform: uppercase;
+    }
+
+
+
+    .btn-add {
+        background-color: #ff4d00;
+        color: #fff;
+
+        &:hover {
+            border: 1px solid #ff4d00 !important;
+            color: #ff4d00 !important;
+            background-color: #fff !important;
+        }
+    }
+
+   
+
+}

@@ -1,0 +1,27 @@
+.container-update{
+    label{
+        font-weight: 400;
+        font-size: 1.5em;
+        font-family: inherit;
+        color: #333;
+        text-transform: uppercase;
+    }
+    .title-primary {
+        font-weight: 400;
+        font-size: 2em;
+        font-family: inherit;
+        color: #333;
+        text-transform: uppercase;
+    }
+    .btn-upload-discount {
+        background-color: #ff4d00 !important;
+        color: #fff !important;
+        border: none;
+        border-radius: none;
+
+        &:hover {
+            background-color: #e44400 !important;
+            color: #fff !important;
+        }
+    }
+}

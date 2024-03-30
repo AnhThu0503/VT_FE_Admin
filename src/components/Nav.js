@@ -15,7 +15,6 @@ const Nav = () => {
     <Menu
       mode="inline"
       className="fs-6 menu-item mt-3"
-      defaultSelectedKeys={["1"]}
       style={{
         backgroundColor: "#ffffff",
       }}
@@ -34,7 +33,7 @@ const Nav = () => {
         </Link>
       </Menu.Item>
       <Menu.Item key="3" className="py-4">
-        <Link to="/voucher" style={{ textDecoration: "none" }}>
+        <Link to="/discount" style={{ textDecoration: "none" }}>
           <BsTicketPerforated className="fs-5 mb-1 me-3" />
           Quản lý khuyến mãi
         </Link>

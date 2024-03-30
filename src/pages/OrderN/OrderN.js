@@ -30,6 +30,7 @@ function OrderN() {
   const [tongTien, setTongTien] = useState();
   const [giaBan, setGiaBan] = useState(0);
   const [giaNhap, setGiaNhap] = useState();
+  const [ngayNhap, setNgayNhap] = useState();
   const [noiDung, setNoiDung] = useState();
   const [moTa, setMoTa] = useState();
   const [dmsp_id, setDMSPID] = useState(1);
@@ -51,6 +52,13 @@ function OrderN() {
       console.error(e);
     }
   };
+  function formatDate(dateObject) {
+    const date = new Date(dateObject);
+    const day = String(date.getDate()).padStart(2, "0"); // Ensure two digits, pad with 0 if necessary
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is zero-indexed, so add 1
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
 
   const uploadProduct = async () => {
     setLoading(true);
@@ -65,6 +73,7 @@ function OrderN() {
       soLuong,
       tongTien,
       giaBan,
+      ngayNhap,
       giaNhap,
       noiDung,
       moTa,
@@ -107,59 +116,65 @@ function OrderN() {
         <div className="m-auto p-auto">
           <div
             className="my-4 col-sm-11 m-auto d-flex"
-            style={{ justifyContent: "end" }}
+            style={{ justifyContent: "space-between" }}
           >
-            <Select
-              onChange={(value) => setIdCategorySelected(value)}
-              style={{ width: 180 }}
-              defaultValue=""
-              size="large"
-              className="col-sm-2"
+            <div className="col-sm-5">
+              <p className="ngayNhap" style={{ textAlign: "left" }}>
+                Ngày nhập hàng
+              </p>
+              <Input
+                className="form-control"
+                type="date"
+                style={{ width: "100%" }}
+                value={ngayNhap}
+                onChange={(e) => setNgayNhap(e.target.value)}
+              ></Input>
+            </div>
+            <div
+              className="col-sm-5 mt-4 d-flex"
+              style={{ justifyContent: "space-between" }}
             >
-              <Select.Option value="">Chọn danh mục</Select.Option>
-              {categorys &&
-                categorys.map((category) => (
-                  <Select.Option
-                    key={category.DMSP_id}
-                    value={category.DMSP_id}
-                  >
-                    {category.DMSP_ten}
-                  </Select.Option>
-                ))}
-            </Select>
+              <Select
+                onChange={(value) => setIdCategorySelected(value)}
+                style={{ width: 180 }}
+                defaultValue=""
+                size="large"
+              >
+                <Select.Option value="">Chọn danh mục</Select.Option>
+                {categorys &&
+                  categorys.map((category) => (
+                    <Select.Option
+                      key={category.DMSP_id}
+                      value={category.DMSP_id}
+                    >
+                      {category.DMSP_ten}
+                    </Select.Option>
+                  ))}
+              </Select>
 
-            <Select
-              onChange={(value) => setIdsupplierSelected(value)}
-              style={{
-                width: 180,
-                marginLeft: "2rem",
-              }}
-              defaultValue=""
-              size="large"
-              className="col-sm-2"
-            >
-              <Select.Option value="">Chọn nhà cung cấp</Select.Option>
-              {suppliers &&
-                suppliers.map((supplier) => (
-                  <Select.Option key={supplier.NCC_id} value={supplier.NCC_id}>
-                    {supplier.NCC_ten}
-                  </Select.Option>
-                ))}
-            </Select>
+              <Select
+                onChange={(value) => setIdsupplierSelected(value)}
+                style={{
+                  width: 180,
+                  marginLeft: "2rem",
+                }}
+                defaultValue=""
+                size="large"
+              >
+                <Select.Option value="">Chọn nhà cung cấp</Select.Option>
+                {suppliers &&
+                  suppliers.map((supplier) => (
+                    <Select.Option
+                      key={supplier.NCC_id}
+                      value={supplier.NCC_id}
+                    >
+                      {supplier.NCC_ten}
+                    </Select.Option>
+                  ))}
+              </Select>
+            </div>
           </div>
-          <div className="mb-3 col-sm-11 m-auto">
-            <p className="product-name" style={{ textAlign: "left" }}>
-              Nội dung nhập hàng
-            </p>
-            <TextArea
-              cols="30"
-              rows="3"
-              title=""
-              className="col-sm-12"
-              value={noiDung}
-              onChange={(e) => setNoiDung(e.target.value)}
-            ></TextArea>
-          </div>
+
           <div
             className="d-flex col-sm-11 m-auto"
             style={{ justifyContent: "space-between" }}
@@ -190,6 +205,19 @@ function OrderN() {
                 readOnly
               ></Input>
             </div>
+          </div>
+          <div className="mb-3 col-sm-11 m-auto">
+            <p className="product-name" style={{ textAlign: "left" }}>
+              Nội dung nhập hàng
+            </p>
+            <TextArea
+              cols="30"
+              rows="3"
+              title=""
+              className="col-sm-12"
+              value={noiDung}
+              onChange={(e) => setNoiDung(e.target.value)}
+            ></TextArea>
           </div>
           <div
             className="col-sm-11 m-auto my-5 pb-3"

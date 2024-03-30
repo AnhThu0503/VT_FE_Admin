@@ -33,14 +33,19 @@ function Order() {
             key: data.order.DH_id,
             index: data.order.DH_id,
             DH_trangThai: data.order.DH_trangThai,
-            ND_diaChi: data.user[0].ND_diaChi,
             chiTietKH: data.user[0],
             DH_ngayDat: formatDate(data.order.DH_ngayDat),
+            DH_phuongThucTT: data.order.DH_phuongThucTT,
             DonHangCT: data.detailOrderProduct,
+            DH_tongTien: data.order.DH_tongTien.toLocaleString("vi", {
+              style: "currency",
+              currency: "VND",
+            }),
           },
         ];
       });
       setOrders(arrtmp);
+      console.log("setorders", orders);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -90,53 +95,38 @@ function Order() {
     },
 
     {
-      title: "Địa chỉ",
-      dataIndex: "ND_diaChi",
-      key: "ND_diaChi",
-    },
-    {
-      title: "Xem chi tiết KH",
+      title: "THÔNG TIN KHÁCH HÀNG",
       dataIndex: "chiTietKH",
       key: "chiTietKH",
       render: (_, record) => {
         return (
-          <div>
+          <div style={{ marginLeft: "3rem" }}>
             <Button
               onClick={() => {
                 showModal(record);
               }}
             >
-              Xem thêm
+              Chi tiết
             </Button>
           </div>
         );
       },
     },
     {
-      title: "Ngày đặt",
+      title: "NGÀY ĐẶT",
       dataIndex: "DH_ngayDat",
       key: "DH_ngayDat",
     },
     {
-      title: "Trạng thái",
+      title: "TỔNG TIỀN",
+      dataIndex: "DH_tongTien",
+      key: "DH_tongTien",
+    },
+    {
+      title: "TRẠNG THÁI",
       dataIndex: "DH_trangThai",
       key: "DH_trangThai",
-      // render: (_, record) => {
-      //   console.log("record", record);
-      //   return (
-      //     <Select
-      //       defaultValue={record.DH_trangThai}
-      //       style={{ width: 150 }}
-      //       onChange={(e) => handleChange(e, record)}
-      //       options={[
-      //         { value: "Chờ xác nhận", label: "Chờ xác nhận" },
-      //         { value: "Đang xử lý", label: "Đang xử lý" },
-      //         { value: "Đã nhận hàng", label: "Đã nhận hàng" },
-      //         { value: "Hủy đơn hàng", label: "Hủy đơn hàng" },
-      //       ]}
-      //     />
-      //   );
-      // },
+
       render: (_, record) => {
         console.log(record);
         return (
@@ -171,13 +161,17 @@ function Order() {
         return record.DH_trangThai.indexOf(value) === 0;
       },
     },
-
     {
-      title: "Xem chi tiết ĐH",
+      title: "PHƯƠNG THỨC THANH TOÁN",
+      dataIndex: "DH_phuongThucTT",
+      key: "DH_phuongThucTT",
+    },
+    {
+      title: "CHI TIẾT ĐƠN HÀNG",
       dataIndex: "DonHangCT",
       key: "DonHangCT",
       render: (_, record) => (
-        <div>
+        <div className="ms-3">
           <Button
             onClick={() => {
               console.log(record);
@@ -198,6 +192,7 @@ function Order() {
       ten: record.chiTietKH.ND_ten,
       email: record.chiTietKH.ND_email,
       sdt: record.chiTietKH.ND_SDT,
+      diachi: record.chiTietKH.ND_diaChi,
     });
   };
 
@@ -230,6 +225,7 @@ function Order() {
             <div>Tên khách hàng: {user.ten}</div>
             <div>Email: {user.email}</div>
             <div>SĐT: {user.sdt}</div>
+            <div>Địa chỉ: {user.diachi}</div>
           </>
         )}
       </Modal>
@@ -244,25 +240,49 @@ function Order() {
         <div ref={componentPDF}>
           {order.chiTietKH && (
             <>
-              <div>Tên khách hàng: {order.chiTietKH.ND_ten}</div>
-              <div style={{ marginTop: "3px" }}>{order.chiTietKH.ND_email}</div>
+              <div>
+                <strong>Tên khách hàng:</strong> {order.chiTietKH.ND_ten}
+              </div>
+              <div style={{ marginTop: "3px" }}>
+                <strong>SĐT: </strong>
+                {order.chiTietKH.ND_SDT}
+              </div>
+              <div>
+                <strong>Địa chỉ:</strong> {order.chiTietKH.ND_diaChi}
+              </div>
             </>
           )}
-          {order.DonHangCT &&
-            order.DonHangCT.length >= 0 &&
-            order.DonHangCT.map((item, index) => {
-              console.log(item[0].SP_ten);
-              return (
-                <div key={index} className="mb-3">
-                  <div>Tên sản phẩm: {item[0].SP_ten}</div>
-                  <div>
-                    Chi tiết sản pẩm: {item[0].SP_trongLuong}
-                    {item[0].SP_donViTinh}
-                  </div>
-                  <div>Số lượng: {item.soluong}</div>
-                </div>
-              );
-            })}
+
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Trọng lượng</th>
+                <th scope="col">Số lượng</th>
+              </tr>
+            </thead>
+            <tbody>
+              {order.DonHangCT &&
+                order.DonHangCT.length >= 0 &&
+                order.DonHangCT.map((item, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{item[0].SP_ten}</td>
+                      <td>
+                        {item[0].SP_trongLuong} {item[0].SP_donViTinh}
+                      </td>
+                      <td>{item.soluong}</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+            <tfoot>
+              <tr className="text-end">
+                <td colSpan="3">Tổng tiền:</td>
+                <td>{order.DH_tongTien}</td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </Modal>
     </div>

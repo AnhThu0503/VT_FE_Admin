@@ -16,24 +16,17 @@
 
 
 
-    .btn-edit {
+    .btn-add {
         background-color: #ff4d00;
         color: #fff;
 
         &:hover {
-            background-color: #e44400;
-            color: #fff;
+            border: 1px solid #ff4d00 !important;
+            color: #ff4d00 !important;
+            background-color: #fff !important;
         }
     }
 
-    .btn-delete {
-        background-color: #41695b;
-        color: #fff;
-
-        &:hover {
-            background-color: #046644;
-            color: #ffffff;
-        }
-    }
+   
 
 }

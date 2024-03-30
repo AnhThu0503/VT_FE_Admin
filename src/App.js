@@ -10,10 +10,13 @@ import Order from "./pages/Order/Order";
 import OrderN from "./pages/OrderN/OrderN";
 import Product from "./pages/Product/Product";
 import User from "./pages/User/User";
-import Voucher from "./pages/Voucher/Voucher";
+import Discount from "./pages/Discount/Discount";
+import DiscountAdd from "./pages/Discount/Components/DiscountAdd";
+import DiscountUpdate from "./pages/Discount/Components/DiscountUpdate";
 import "./App.scss";
 import { BsPersonCircle } from "react-icons/bs";
 import ProductUpdate from "./pages/Product/commponents/ProductUpdate";
+import ImpOrder from "./pages/OrderN/ImpOrder";
 const { Content, Footer, Sider } = Layout;
 
 const App = () => {
@@ -77,18 +80,18 @@ const App = () => {
               }}
             >
               <Routes>
-                <Route path="/voucher" element={<Voucher />} exact />
-                <Route path="/category" element={<Category />} exact />
-                <Route path="/product" element={<Product />} exact />
-                <Route
-                  path="/product-edit/:id"
-                  element={<ProductUpdate />}
-                  exact
-                />
-                <Route path="/blog" element={<Blog />} exact />
-                <Route path="/order" element={<Order />} exact />
-                <Route path="/order-nhap" element={<OrderN />} exact />
-                <Route path="/user" element={<User />} exact />
+                <Route path="/discount" element={<Discount />} />
+                <Route path="/discount/add" element={<DiscountAdd />} />
+                <Route path="/discount-edit/:id" element={<DiscountUpdate />} />
+                <Route path="/category" element={<Category />} />
+                <Route path="/product" element={<Product />} />
+                <Route path="/product-edit/:id" element={<ProductUpdate />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/order" element={<Order />} />
+                <Route path="/order-nhap/add" element={<OrderN />} />
+                <Route path="/order-nhap" element={<ImpOrder />} />
+
+                <Route path="/user" element={<User />} />
                 <Route path="/" element={<Home />} exact />
               </Routes>
             </div>
