@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button, notification, Form, Input } from "antd";
+import { Button, message, Form, Input } from "antd";
 import "./DiscountAdd.scss";
+import dayjs from "dayjs";
+
 const { TextArea } = Input;
 const key = "updatable";
 async function readAsDataURL(file) {
@@ -19,8 +21,8 @@ const DiscountUpdate = () => {
   const { id } = useParams();
   const [form] = Form.useForm();
   const [discount, setDiscount] = useState([]);
-  const [api, contextHolder] = notification.useNotification();
-  const navigation = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -32,44 +34,60 @@ const DiscountUpdate = () => {
         form.setFieldsValue({
           KM_noiDung: response.data.discount[0].KM_noiDung,
           SP_id: response.data.discount[0].SP_id,
-          KM_ngayBatDau: response.data.discount[0].KM_ngayBatDau,
-          KM_ngayKetThuc: response.data.discount[0].KM_ngayKetThuc,
+          KM_ngayBatDau: dayjs(response.data.discount[0].KM_ngayBatDau).format(
+            "DD-MM-YYYY"
+          ),
+          KM_ngayKetThuc: dayjs(
+            response.data.discount[0].KM_ngayKetThuc
+          ).format("DD-MM-YYYY"),
           KM_mucGiamGia: response.data.discount[0].KM_mucGiamGia,
         });
       }
     })();
   }, []);
+  const validateDate = (date) => {
+    const dateString = date; // Your date string
 
+    // Parse the date string and create a Date object
+    const dateParts = dateString.split("-");
+    const year = parseInt(dateParts[2]);
+    const month = parseInt(dateParts[1]) - 1; // Months in JavaScript are zero-based
+    const day = parseInt(dateParts[0]);
+    const dateObject = new Date(year, month, day);
+
+    // Convert the Date object to the ISO 8601 format
+    const isoDateString = dateObject.toISOString();
+
+    return isoDateString;
+  };
   const updateDiscount = async (values) => {
     try {
       const response = await axios.put("/api/admin/discount/update", {
         KM_id: id,
         KM_noiDung: values.KM_noiDung,
         SP_id: values.SP_id,
-        KM_ngayBatDau: values.KM_ngayBatDau,
-        KM_ngayKetThuc: values.KM_ngayKetThuc,
+        KM_ngayBatDau: validateDate(values.KM_ngayBatDau),
+        KM_ngayKetThuc: validateDate(values.KM_ngayKetThuc),
         KM_mucGiamGia: values.KM_mucGiamGia,
       });
       console.log(response);
       if (response.data) {
-        api.open({
-          key,
+        messageApi.open({
           type: "success",
-          message: "Cập nhật thông tin thành công!",
+          content: "Cập nhật khuyến mãi thành công!",
         });
+        navigate("/discount");
       } else {
-        api.open({
-          key,
+        messageApi.open({
           type: "error",
-          message: "Cập nhật thông tin thất bại!",
+          content: "Cập nhật khuyến mãi thất bại!",
         });
       }
     } catch (error) {
       console.error("Error:", error);
-      api.open({
-        key,
+      messageApi.open({
         type: "error",
-        message: "Cập nhật thông tin thất bại!",
+        content: "Cập nhật khuyến mãi thất bại!",
       });
     }
   };

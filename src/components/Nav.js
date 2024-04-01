@@ -67,7 +67,6 @@ const Nav = () => {
       </Menu.Item>
       <Menu.Item key="8" className="py-4">
         <Link to="/user" style={{ textDecoration: "none" }}>
-          {" "}
           <BsFillPersonFill className="fs-5 mb-1 me-3" />
           Quản lý người dùng
         </Link>

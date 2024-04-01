@@ -1,145 +1,145 @@
-import React, { useEffect, useState } from "react";
 import "./Home.scss";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { BsBox, BsTags, BsPeople, BsCart3 } from "react-icons/bs";
+import TKSPBanChay from "./Components/TKSPBanChay";
+import TKSPBanCham from "./Components/TKSPBanCham";
+import { useState, useEffect } from "react";
 import axios from "axios";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top",
-    },
-    title: {
-      display: true,
-      text: "",
-    },
-  },
-};
-
-const labels = ["Bán được", "Tồn kho"];
-
-// // Actual data values
-const dataset1Data = [200, 300, 400, 500, 600, 700, 800];
-const dataset2Data = [300, 400, 500, 600, 700, 800, 900];
-
-const dataBar = {
-  label: "bán đc",
-  data: [200, 300, 400, 500, 600, 700, 800],
-  backgroundColor: "rgba(255, 99, 132, 0.5)",
-};
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Bán đc",
-      data: dataset1Data,
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Tồn kho",
-      data: dataset2Data,
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-  ],
-};
-
-function extractChartData(inputData) {
-  // Initialize arrays to store data
-  const data = [];
-
-  // Extract data from productsOrder and productReceipt arrays
-  const labels = [];
-  const quantitiesSold = [];
-  const quantitiesInStock = [];
-
-  inputData.productsOrder.forEach((product) => {
-    labels.push(product.ten);
-    quantitiesSold.push(product.soluong);
-  });
-
-  inputData.productReceipt.forEach((product) => {
-    quantitiesInStock.push(product.soluong);
-  });
-
-  // Construct data array with the desired format
-  data.push({
-    label: "Bán được",
-    data: quantitiesSold,
-    backgroundColor: "rgba(255, 99, 132, 0.5)",
-  });
-
-  data.push({
-    label: "Tồn kho",
-    data: quantitiesInStock,
-    backgroundColor: "rgba(245, 222, 94, 0.8)",
-  });
-
-  return { data, labels };
-}
-
-// Input JSON data
-const inputData = {
-  productsOrder: [
-    { ten: "banh pia me den", soluong: 8 },
-    { ten: "banh pia", soluong: 4 },
-  ],
-  productReceipt: [
-    { ten: "banh pia me den", soluong: 1 },
-    { ten: "banh pia", soluong: 10 },
-  ],
-};
-
-// Extracted data
-const extractedData = extractChartData(inputData);
-console.log("Extracted Data:", extractedData);
-
-function Home() {
-  const [datatest, setData] = useState();
-  const [labesSet, setLabesSet] = useState();
-
+import { Link } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { Input, Button } from "antd";
+import TKDoanhThu from "./Components/TKDoanhThu";
+const Home = () => {
+  const [numOrders, setNumOrders] = useState(0);
+  const [numProducts, setNumProducts] = useState(0);
+  const [numUsers, setNumUsers] = useState(0);
+  const [numOrdersConfirm, setNumOrdersConfirm] = useState(0);
   useEffect(() => {
-    (async () => {
-      const product = await axios.get("/api/admin/static");
-      if (product.data) {
-        const { data } = extractChartData(product.data);
-        const { labels } = extractChartData(product.data);
-        console.log(data);
-        setLabesSet(labesSet);
-        setData({
-          labels: labels,
-          datasets: data,
-        });
-      }
-    })();
+    countOrder();
+    countProduct();
+    countUser();
+    countOrderConfirm();
   }, []);
+  const countOrder = async () => {
+    try {
+      const response = await fetch("/api/admin/orders-count"); // Replace with your endpoint
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setNumOrders(data.numOrders);
+    } catch (error) {
+      console.error("Error fetching number of orders:", error);
+    }
+  };
+  const countOrderConfirm = async () => {
+    try {
+      const response = await fetch("/api/admin/ordersConfirm-count"); // Replace with your endpoint
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setNumOrdersConfirm(data.numOrdersConfirm);
+    } catch (error) {
+      console.error("Error fetching number of orders:", error);
+    }
+  };
+  const countProduct = async () => {
+    try {
+      const response = await fetch("/api/admin/products-count"); // Replace with your endpoint
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setNumProducts(data.numProducts);
+    } catch (error) {
+      console.error("Error fetching number of orders:", error);
+    }
+  };
+  const countUser = async () => {
+    try {
+      const response = await fetch("/api/admin/users-count"); // Replace with your endpoint
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setNumUsers(data.numUsers);
+    } catch (error) {
+      console.error("Error fetching number of users:", error);
+    }
+  };
 
   return (
-    <div className="container-home">
-      <div className="title-primary pb-4">Thống kê sản phẩm bán chạy</div>
-      <div>
-        <Bar options={options} data={datatest ? datatest : data} />
+    <div className="container-home container">
+      <div className="title-primary pb-4">Thống kê</div>
+      <div
+        className="d-flex col-sm-12"
+        style={{ justifyContent: "space-between" }}
+      >
+        <div className="col-sm-3 box d-flex ">
+          <div
+            className="col-sm-3 pt-4 pb-4"
+            style={{ backgroundColor: "#20C2EE" }}
+          >
+            <BsBox className="fs-2 mt-2" style={{ color: "#ffffff" }} />
+          </div>
+          <div className="col-sm-7 " style={{ border: "1px solid #20C2EE" }}>
+            <p className="p-0 m-0 fs-3">{numOrders}</p>
+            <p className="p-0 m-0">Đơn hàng</p>
+            <Link to="/order">Chi tiết</Link>
+          </div>
+        </div>
+        <div className="col-sm-3 box d-flex ">
+          <div
+            className="col-sm-3 pt-4 pb-4"
+            style={{ backgroundColor: "#DB4B3F" }}
+          >
+            <BsCart3 className="fs-2 mt-2" style={{ color: "#ffffff" }} />
+          </div>
+          <div className="col-sm-7 " style={{ border: "1px solid #DB4B3F" }}>
+            <p className="p-0 m-0 fs-3">{numOrdersConfirm}</p>
+            <p className="p-0 m-0">Đơn hàng chờ xác nhận</p>
+            <Link to="/order">Chi tiết</Link>
+          </div>
+        </div>
+        <div className="col-sm-3 box d-flex " style={{ justifyContent: "end" }}>
+          <div
+            className="col-sm-3 pt-4 pb-4"
+            style={{ backgroundColor: "#18A45F" }}
+          >
+            <BsTags className="fs-2 mt-2" style={{ color: "#ffffff" }} />
+          </div>
+          <div className="col-sm-7 " style={{ border: "1px solid #18A45F" }}>
+            <p className="p-0 m-0 fs-3">{numProducts}</p>
+            <p className="p-0 m-0">Sản phẩm</p>
+            <Link to="/product">Chi tiết</Link>
+          </div>
+        </div>
+        <div className="col-sm-3 box d-flex " style={{ justifyContent: "end" }}>
+          <div
+            className="col-sm-3 pt-4 pb-4"
+            style={{ backgroundColor: "#F19B30" }}
+          >
+            <BsPeople className="fs-2 mt-2" style={{ color: "#ffffff" }} />
+          </div>
+          <div className="col-sm-7 " style={{ border: "1px solid #F19B30" }}>
+            <p className="p-0 m-0 fs-3">{numUsers}</p>
+            <p className="p-0 m-0">Thành viên</p>
+            <Link to="/user">Chi tiết</Link>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-sm-12 d-flex mx-auto mt-4 mb-4"
+        style={{ justifyContent: "space-between" }}
+      >
+        <TKSPBanChay />
+        <TKSPBanCham />
+      </div>
+      <div className="col-sm-12 mt-4 mb-4">
+        <TKDoanhThu />
       </div>
     </div>
   );
-}
-
+};
 export default Home;

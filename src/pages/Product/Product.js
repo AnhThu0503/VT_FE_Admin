@@ -9,6 +9,7 @@ const Product = () => {
   let navigate = useNavigate();
   const [falg, setFalg] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [detailProduct, setDetailProduct] = useState();
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
   const [giabd, setGiabd] = useState();
   const [thoigia, setthoigia] = useState();
@@ -63,6 +64,8 @@ const Product = () => {
           </Button>
           <Button
             onClick={() => {
+              console.log(record);
+              setDetailProduct(record);
               showModal(record);
             }}
           >
@@ -92,6 +95,7 @@ const Product = () => {
           SP_NSX: item.SP_NSX,
           SP_HSD: item.SP_HSD,
           SP_moTa: item.SP_moTa,
+          SP_image: item.image,
           DMSP_ten: item.category.DMSP_ten,
           SP_giaBanDau: item.G_giaBanDau,
           SP_thoiGia:
@@ -169,6 +173,8 @@ const Product = () => {
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   }
+
+  console.log(detailProduct);
   return (
     <div className="container-product">
       <div className="text-center title-primary pb-4">Quản lý sản phẩm</div>
@@ -179,7 +185,21 @@ const Product = () => {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-      ></Modal>
+      >
+        <p className="p-0 m-0">Tên sản phẩm: {detailProduct?.SP_ten}</p>
+        <p className="p-0 m-0">
+          {" "}
+          Trọng lượng: {detailProduct?.SP_trongLuong}{" "}
+          {detailProduct?.SP_donViTinh}
+        </p>
+        <p className="p-0 m-0">Mô tả: {detailProduct?.SP_moTa}</p>
+        <img
+          key={1}
+          src={detailProduct?.SP_image ? detailProduct.SP_image : ""}
+          alt="Hình ảnh sản phẩm"
+          style={{ width: "100px", height: "100px" }}
+        />
+      </Modal>
     </div>
   );
 };

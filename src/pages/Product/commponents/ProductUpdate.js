@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
+import dayjs from "dayjs";
 import "./ProductUpdate.scss";
 import axios from "axios";
-import { Button, notification, Form, Input } from "antd";
+import { Button, message, Form, Input } from "antd";
 const { TextArea } = Input;
 const key = "updatable";
 async function readAsDataURL(file) {
@@ -22,7 +22,7 @@ const ProductUpdate = () => {
   const [form] = Form.useForm();
   const [product, setProduct] = useState([]);
 
-  const [api, contextHolder] = notification.useNotification();
+  const [messageApi, contextHolder] = message.useMessage();
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -35,8 +35,8 @@ const ProductUpdate = () => {
         form.setFieldsValue({
           SP_ten: response.data.product[0].SP_ten,
           SP_soLuong: response.data.product[0].SP_soLuong,
-          SP_HSD: response.data.product[0].SP_HSD,
-          SP_NSX: response.data.product[0].SP_NSX,
+          SP_HSD: dayjs(response.data.product[0].SP_HSD).format("DD-MM-YYYY"),
+          SP_NSX: dayjs(response.data.product[0].SP_NSX).format("DD-MM-YYYY"),
           G_thoiGia: response.data.price[0].G_thoiGia,
           SP_trongLuong: response.data.product[0].SP_trongLuong,
           SP_donViTinh: response.data.product[0].SP_donViTinh,
@@ -54,6 +54,23 @@ const ProductUpdate = () => {
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   }
+
+  const validateDate = (date) => {
+    const dateString = date; // Your date string
+
+    // Parse the date string and create a Date object
+    const dateParts = dateString.split("-");
+    const year = parseInt(dateParts[2]);
+    const month = parseInt(dateParts[1]) - 1; // Months in JavaScript are zero-based
+    const day = parseInt(dateParts[0]);
+    const dateObject = new Date(year, month, day);
+
+    // Convert the Date object to the ISO 8601 format
+    const isoDateString = dateObject.toISOString();
+
+    return isoDateString;
+  };
+
   const updateProduct = async (values) => {
     try {
       const response = await axios.put("/api/admin/product/update", {
@@ -61,23 +78,23 @@ const ProductUpdate = () => {
         SP_ten: values.SP_ten,
         SP_soLuong: values.SP_soLuong,
         SP_donViTinh: values.SP_donViTinh,
-        SP_NSX: values.SP_NSX,
-        SP_HSD: values.SP_HSD,
+        SP_NSX: validateDate(values.SP_NSX),
+        SP_HSD: validateDate(values.SP_HSD),
         SP_trongLuong: values.SP_trongLuong,
         SP_moTa: values.SP_moTa,
         G_thoiGia: values.G_thoiGia,
       });
-      console.log(response);
+      // console.log(response);
       if (response.data) {
-        api.open({
-          key,
-          message: "Cập nhật thông tin thành công",
+        messageApi.open({
+          type: "success",
+          content: "Cập nhật sản phẩm thành công!",
         });
         navigation("/product");
       } else {
-        api.open({
-          key,
-          message: "Cập nhật thông tin thất bại",
+        messageApi.open({
+          type: "error",
+          content: "Cập nhật sản phẩm thất bại!",
         });
       }
     } catch (e) {

@@ -1,13 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Table, Button, notification } from "antd";
+import { useNavigate } from "react-router-dom";
 import "./User.scss";
 const key = "updatable";
 const User = () => {
   const [users, setUsers] = useState();
   const [falg, setFalg] = useState(false);
   const [api, contextHolder] = notification.useNotification();
+  const navigate = useNavigate();
 
+  const handleUserEdit = (record) => {
+    navigate(`/user-edit/${record.key}`);
+  };
   useEffect(() => {
     getAllUser();
   }, [falg]);
@@ -55,7 +60,7 @@ const User = () => {
       render: (text, record) => (
         <div style={{ textAlign: "right" }}>
           {" "}
-          <Button>Cập nhật</Button>
+          <Button onClick={() => handleUserEdit(record)}>Cập nhật</Button>
           <Button
             className="mx-2"
             type="primary"

@@ -17,6 +17,9 @@ import "./App.scss";
 import { BsPersonCircle } from "react-icons/bs";
 import ProductUpdate from "./pages/Product/commponents/ProductUpdate";
 import ImpOrder from "./pages/OrderN/ImpOrder";
+import TKSPBanChay from "./pages/Home/Components/TKSPBanChay";
+import TKSPBanCham from "./pages/Home/Components/TKSPBanCham";
+import UserUpdate from "./pages/User/components/UserUpdate";
 const { Content, Footer, Sider } = Layout;
 
 const App = () => {
@@ -86,12 +89,15 @@ const App = () => {
                 <Route path="/category" element={<Category />} />
                 <Route path="/product" element={<Product />} />
                 <Route path="/product-edit/:id" element={<ProductUpdate />} />
+                <Route path="/user-edit/:id" element={<UserUpdate />} />
+
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/order" element={<Order />} />
                 <Route path="/order-nhap/add" element={<OrderN />} />
                 <Route path="/order-nhap" element={<ImpOrder />} />
 
                 <Route path="/user" element={<User />} />
+
                 <Route path="/" element={<Home />} exact />
               </Routes>
             </div>
