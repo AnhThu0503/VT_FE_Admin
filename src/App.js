@@ -1,10 +1,11 @@
+import "./App.scss";
 import React from "react";
 import Logo from "./assets/Logo/image.png";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout, theme } from "antd";
 import Nav from "./components/Nav";
 import Home from "./pages/Home/Home";
-import Blog from "./pages/Blog/Blog";
+import Blog1 from "./pages/Blog/Blog1";
 import Category from "./pages/Category/Category";
 import Order from "./pages/Order/Order";
 import OrderN from "./pages/OrderN/OrderN";
@@ -13,14 +14,12 @@ import User from "./pages/User/User";
 import Discount from "./pages/Discount/Discount";
 import DiscountAdd from "./pages/Discount/Components/DiscountAdd";
 import DiscountUpdate from "./pages/Discount/Components/DiscountUpdate";
-import "./App.scss";
 import { BsPersonCircle } from "react-icons/bs";
 import ProductUpdate from "./pages/Product/commponents/ProductUpdate";
 import ImpOrder from "./pages/OrderN/ImpOrder";
-import TKSPBanChay from "./pages/Home/Components/TKSPBanChay";
-import TKSPBanCham from "./pages/Home/Components/TKSPBanCham";
 import UserUpdate from "./pages/User/components/UserUpdate";
-const { Content, Footer, Sider } = Layout;
+import CreateBlog from "./pages/Blog/components/CreateBlog";
+const { Content, Sider } = Layout;
 
 const App = () => {
   const {
@@ -91,7 +90,8 @@ const App = () => {
                 <Route path="/product-edit/:id" element={<ProductUpdate />} />
                 <Route path="/user-edit/:id" element={<UserUpdate />} />
 
-                <Route path="/blog" element={<Blog />} />
+                <Route path="/create-blog" element={<CreateBlog />} />
+                <Route path="/blog" element={<CreateBlog />} />
                 <Route path="/order" element={<Order />} />
                 <Route path="/order-nhap/add" element={<OrderN />} />
                 <Route path="/order-nhap" element={<ImpOrder />} />
@@ -102,13 +102,6 @@ const App = () => {
               </Routes>
             </div>
           </Content>
-          {/* <Footer
-                        style={{
-                            textAlign: 'center',
-                        }}
-                    >
-                        Ant Design ©{new Date().getFullYear()} Created by Ant UED
-                    </Footer> */}
         </Layout>
       </Layout>
     </BrowserRouter>
