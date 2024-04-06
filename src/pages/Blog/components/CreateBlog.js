@@ -1,8 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { Input, Select, Button } from "antd";
+import { Input, Select, Button, Upload } from "antd";
 import axios from "axios";
+import { UploadOutlined } from "@ant-design/icons";
+
+async function readAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onerror = reject;
+    fr.onload = () => {
+      resolve(fr.result);
+    };
+    fr.readAsDataURL(file);
+  });
+}
 const CreateBlog = () => {
   const [value, setValue] = useState("");
   const toolbarOptions = [
@@ -25,7 +37,7 @@ const CreateBlog = () => {
   const [id_category_selected, setIdCategorySelected] = useState();
   const [B_tieuDe, setB_tieuDe] = useState();
   const [is_loading, setLoading] = useState(false);
-
+  const [file_images, setFileImages] = useState([]);
   const module = {
     toolbar: toolbarOptions,
   };
@@ -43,17 +55,24 @@ const CreateBlog = () => {
   };
   const createBlog = async () => {
     setLoading(true);
-
     const response = await axios.post("/api/admin/blog", {
       id_category_selected,
       B_tieuDe,
       value,
+      file_images,
     });
     setLoading(false);
     setB_tieuDe("");
     setValue("");
   };
-  console.log("value>>>>>>>>>>>", value);
+  const onChangeFiles = async (info) => {
+    let array_base = [];
+    for (let file of info.fileList) {
+      let temp = await readAsDataURL(file.originFileObj);
+      array_base.push(temp);
+    }
+    setFileImages(array_base);
+  };
   return (
     <div>
       <div className="container-blog pb-4">
@@ -109,6 +128,16 @@ const CreateBlog = () => {
                 ></ReactQuill>
               </div>
             </div>
+          </div>
+          <div className="col-sm-10 m-auto pb-3">
+            <p className="img-blog" style={{ textAlign: "left" }}>
+              Ảnh bìa blog:
+            </p>
+            <Upload multiple={true} accept="image/*" onChange={onChangeFiles}>
+              <Button icon={<UploadOutlined />} size="large" className="my-3">
+                Click to Upload
+              </Button>
+            </Upload>
           </div>
 
           <div className=" col-sm-11 mx-auto d-flex justify-content-end mb-3">
