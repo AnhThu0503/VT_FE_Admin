@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const key = "updatable";
 function Voucher() {
   const [data, setData] = useState([]);
+  const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
   const [falg, setFalg] = useState(false);
   const handleUpdateDiscount = (record) => {
@@ -100,21 +101,24 @@ function Voucher() {
 
   const deleteDiscount = async (record) => {
     try {
-      console.log(record);
-      // Make a DELETE request to your backend API endpoint
       const response = await axios.delete(`/api/admin/discount/delete`, {
         params: {
           KM_id: record.key,
         },
       });
-
-      // Check if the request was successful
       if (response.status === 200) {
-        console.log("Discount deleted successfully");
+        api.open({
+          key,
+          type: "success",
+          message: "Xóa khuyến mãi thành công!",
+        });
         setFalg(!falg);
       } else {
-        console.log("Failed to delete discount");
-        // Optionally, you can return false to indicate failure
+        api.open({
+          key,
+          type: "error",
+          message: "Xóa khuyến mãi thất bại!",
+        });
       }
     } catch (error) {
       console.error("Error occurred while deleting discount:", error);
@@ -129,6 +133,7 @@ function Voucher() {
   }
   return (
     <div className="container-voucher ">
+      {contextHolder}
       <div className="title-primary pb-4">Quản lý khuyến mãi</div>
       <div className="text-end mb-4">
         <Button onClick={handleAddDiscount} size="large" className="btn-add">

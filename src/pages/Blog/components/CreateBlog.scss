@@ -1,0 +1,18 @@
+.container-blog{
+    p {
+        color: #666666;
+        margin-bottom: 0;
+        font-size: 1.2rem;
+    }
+    .btn-upload-blog {
+        background-color: #ff4d00;
+        color: #fff;
+        border: none;
+        border-radius: none;
+
+        &:hover {
+            background-color: #e44400 !important;
+            color: #fff !important;
+        }
+    }
+}

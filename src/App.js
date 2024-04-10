@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout, theme } from "antd";
 import Nav from "./components/Nav";
 import Home from "./pages/Home/Home";
-import Blog1 from "./pages/Blog/Blog1";
 import Category from "./pages/Category/Category";
 import Order from "./pages/Order/Order";
 import OrderN from "./pages/OrderN/OrderN";
@@ -19,6 +18,10 @@ import ProductUpdate from "./pages/Product/commponents/ProductUpdate";
 import ImpOrder from "./pages/OrderN/ImpOrder";
 import UserUpdate from "./pages/User/components/UserUpdate";
 import CreateBlog from "./pages/Blog/components/CreateBlog";
+import TKSPBanChay from "./pages/Home/Components/TKSPBanChay";
+import TKSPBanCham from "./pages/Home/Components/TKSPBanCham";
+import Blog from "./pages/Blog/Blog";
+import UpdateBlog from "./pages/Blog/components/UpdateBlog";
 const { Content, Sider } = Layout;
 
 const App = () => {
@@ -64,7 +67,7 @@ const App = () => {
         </Sider>
         <Layout
           style={{
-            marginLeft: 250,
+            marginLeft: 270,
           }}
         >
           <Content
@@ -89,15 +92,17 @@ const App = () => {
                 <Route path="/product" element={<Product />} />
                 <Route path="/product-edit/:id" element={<ProductUpdate />} />
                 <Route path="/user-edit/:id" element={<UserUpdate />} />
-
-                <Route path="/create-blog" element={<CreateBlog />} />
-                <Route path="/blog" element={<CreateBlog />} />
+                <Route path="/blog-edit/:id" element={<UpdateBlog />} />
+                <Route path="/blog/add" element={<CreateBlog />} />
+                <Route path="/blog" element={<Blog />} />
                 <Route path="/order" element={<Order />} />
                 <Route path="/order-nhap/add" element={<OrderN />} />
                 <Route path="/order-nhap" element={<ImpOrder />} />
 
                 <Route path="/user" element={<User />} />
-
+                <Route path="/product-best" element={<TKSPBanChay />} />
+                <Route path="/product-slow" element={<TKSPBanCham />} />
+                <Route path="/static" element={<Home />} />
                 <Route path="/" element={<Home />} exact />
               </Routes>
             </div>

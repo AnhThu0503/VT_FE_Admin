@@ -129,13 +129,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div
-        className="col-sm-12 d-flex mx-auto mt-4 mb-4"
-        style={{ justifyContent: "space-between" }}
-      >
-        <TKSPBanChay />
-        <TKSPBanCham />
-      </div>
+
       <div className="col-sm-12 mt-4 mb-4">
         <TKDoanhThu />
       </div>

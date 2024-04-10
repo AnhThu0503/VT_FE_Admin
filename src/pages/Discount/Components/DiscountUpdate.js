@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button, message, Form, Input } from "antd";
+import { Button, message, Form, Input, Select } from "antd";
 import "./DiscountAdd.scss";
 import dayjs from "dayjs";
 
@@ -23,7 +23,21 @@ const DiscountUpdate = () => {
   const [discount, setDiscount] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const [id_product_selected, setIdProductSelected] = useState();
 
+  useEffect(() => {
+    getAllProductSelect();
+  }, []);
+  const getAllProductSelect = async () => {
+    try {
+      const response = await axios.get("/api/admin/products-select");
+      setProducts(response.data);
+      console.log("products-==--==-", products);
+    } catch (e) {
+      console.error(e);
+    }
+  };
   useEffect(() => {
     (async () => {
       const response = await axios.post("/api/admin/discount/update", {
@@ -42,22 +56,18 @@ const DiscountUpdate = () => {
           ).format("DD-MM-YYYY"),
           KM_mucGiamGia: response.data.discount[0].KM_mucGiamGia,
         });
+        setIdProductSelected(response.data.discount[0].SP_id);
       }
     })();
   }, []);
   const validateDate = (date) => {
-    const dateString = date; // Your date string
-
-    // Parse the date string and create a Date object
+    const dateString = date;
     const dateParts = dateString.split("-");
     const year = parseInt(dateParts[2]);
     const month = parseInt(dateParts[1]) - 1; // Months in JavaScript are zero-based
     const day = parseInt(dateParts[0]);
     const dateObject = new Date(year, month, day);
-
-    // Convert the Date object to the ISO 8601 format
     const isoDateString = dateObject.toISOString();
-
     return isoDateString;
   };
   const updateDiscount = async (values) => {
@@ -69,6 +79,7 @@ const DiscountUpdate = () => {
         KM_ngayBatDau: validateDate(values.KM_ngayBatDau),
         KM_ngayKetThuc: validateDate(values.KM_ngayKetThuc),
         KM_mucGiamGia: values.KM_mucGiamGia,
+        id_product_selected,
       });
       console.log(response);
       if (response.data) {
@@ -122,7 +133,7 @@ const DiscountUpdate = () => {
             <Input size="large" />
           </Form.Item>
           <Form.Item
-            label="Mã sản phẩm"
+            label="Tên sản phẩm khuyến mãi"
             name="SP_id"
             rules={[
               {
@@ -131,7 +142,20 @@ const DiscountUpdate = () => {
               },
             ]}
           >
-            <Input size="large" disabled />
+            <Select
+              className="m-0"
+              size="large"
+              onChange={(value) => setIdProductSelected(value)}
+              style={{ width: "fitContent" }}
+              value={id_product_selected}
+            >
+              {products &&
+                products.map((product) => (
+                  <Select.Option key={product.SP_id} value={product.SP_id}>
+                    {product.SP_ten}
+                  </Select.Option>
+                ))}
+            </Select>
           </Form.Item>
 
           <Form.Item

@@ -38,10 +38,10 @@ const TKDoanhThu = () => {
 
   return (
     <div className="container-doanhthu mt-4 pt-4">
-      <h5 className="title-secon ms-4" style={{ textAlign: "left" }}>
+      <h5 className="title-secon" style={{ textAlign: "left" }}>
         Doanh thu
       </h5>
-      <div className="px-4 pt-2">
+      <div className=" pt-2">
         <div
           className="d-flex mx-auto"
           style={{ justifyContent: "space-between" }}

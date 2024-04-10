@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import "./ProductUpdate.scss";
 import axios from "axios";
-import { Button, message, Form, Input } from "antd";
+import { Button, message, Form, Input, Select } from "antd";
 const { TextArea } = Input;
 const key = "updatable";
 async function readAsDataURL(file) {
@@ -21,10 +21,21 @@ const ProductUpdate = () => {
   const { id } = useParams();
   const [form] = Form.useForm();
   const [product, setProduct] = useState([]);
-
+  const [categorys, setCategorys] = useState([]);
+  const [id_category_selected, setIdCategorySelected] = useState();
   const [messageApi, contextHolder] = message.useMessage();
   const navigation = useNavigate();
-
+  useEffect(() => {
+    getAllCategoryAndSupplier();
+  }, []);
+  const getAllCategoryAndSupplier = async () => {
+    try {
+      const response = await axios.get("/api/admin/category-and-supplier");
+      setCategorys(response.data.categorys);
+    } catch (e) {
+      console.error(e);
+    }
+  };
   useEffect(() => {
     (async () => {
       const response = await axios.post("/api/admin/product/update", {
@@ -41,8 +52,9 @@ const ProductUpdate = () => {
           SP_trongLuong: response.data.product[0].SP_trongLuong,
           SP_donViTinh: response.data.product[0].SP_donViTinh,
           SP_moTa: response.data.product[0].SP_moTa,
-          DMSP_ten: response.data.category[0].DMSP_ten,
+          DMSP_id: response.data.category[0].DMSP_id,
         });
+        setIdCategorySelected(response.data.category[0].DMSP_id);
       }
     })();
   }, []);
@@ -83,6 +95,7 @@ const ProductUpdate = () => {
         SP_trongLuong: values.SP_trongLuong,
         SP_moTa: values.SP_moTa,
         G_thoiGia: values.G_thoiGia,
+        id_category_selected,
       });
       // console.log(response);
       if (response.data) {
@@ -135,7 +148,7 @@ const ProductUpdate = () => {
             <Form.Item
               className="col-sm-5"
               label="Danh mục sản phẩm"
-              name="DMSP_ten"
+              name="DMSP_id"
               rules={[
                 {
                   required: true,
@@ -143,7 +156,23 @@ const ProductUpdate = () => {
                 },
               ]}
             >
-              <Input disabled size="large" />
+              <Select
+                className="m-0"
+                size="large"
+                onChange={(value) => setIdCategorySelected(value)}
+                style={{ width: "fitContent" }}
+                value={id_category_selected}
+              >
+                {categorys &&
+                  categorys.map((category) => (
+                    <Select.Option
+                      key={category.DMSP_id}
+                      value={category.DMSP_id}
+                    >
+                      {category.DMSP_ten}
+                    </Select.Option>
+                  ))}
+              </Select>
             </Form.Item>
           </div>
           <div className="d-flex" style={{ justifyContent: "space-between" }}>

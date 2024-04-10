@@ -10,6 +10,8 @@ import {
   BsTicketPerforated,
   BsFillTagsFill,
 } from "react-icons/bs";
+const { SubMenu } = Menu;
+
 const Nav = () => {
   return (
     <Menu
@@ -19,13 +21,31 @@ const Nav = () => {
         backgroundColor: "#ffffff",
       }}
     >
-      <Menu.Item key="/" className="py-4">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          {" "}
-          <BsBarChartFill className="fs-5 mb-2 me-3" />
-          Xem thống kê
-        </Link>
-      </Menu.Item>
+      <SubMenu
+        key="/"
+        title={
+          <span>
+            <BsBarChartFill className="fs-5 mb-1 me-3" />
+            Thống kê
+          </span>
+        }
+      >
+        <Menu.Item key="/static">
+          <Link to="/static" style={{ textDecoration: "none" }}>
+            Doanh thu
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="/product-best">
+          <Link to="/product-best" style={{ textDecoration: "none" }}>
+            Sản phẩm bán chạy
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="/product-slow">
+          <Link to="/product-slow" style={{ textDecoration: "none" }}>
+            Sản phẩm bán chậm
+          </Link>
+        </Menu.Item>
+      </SubMenu>
       <Menu.Item key="/blog" className="py-4">
         <Link to="/blog" style={{ textDecoration: "none" }}>
           <BsCardHeading className="fs-5 mb-1 me-3" />

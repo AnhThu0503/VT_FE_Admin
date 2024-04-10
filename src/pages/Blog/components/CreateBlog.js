@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { Input, Select, Button, Upload } from "antd";
+import { Input, Select, Button, Upload, message } from "antd";
 import axios from "axios";
 import { UploadOutlined } from "@ant-design/icons";
+import "./CreateBlog.scss";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 async function readAsDataURL(file) {
   return new Promise((resolve, reject) => {
@@ -73,6 +75,18 @@ const CreateBlog = () => {
     }
     setFileImages(array_base);
   };
+  const beforeUpload = (file) => {
+    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    if (!isJpgOrPng) {
+      message.error("You can only upload JPG/PNG file!");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("Image must smaller than 2MB!");
+    }
+    return isJpgOrPng && isLt2M;
+  };
+
   return (
     <div>
       <div className="container-blog pb-4">
@@ -83,7 +97,7 @@ const CreateBlog = () => {
             style={{ justifyContent: "space-between" }}
           >
             <div className="col-sm-5 ">
-              <p className="title-blog" style={{ textAlign: "left" }}>
+              <p className="title-blog m-0 p-0" style={{ textAlign: "left" }}>
                 Tiêu đề blog:
               </p>
               <Input
@@ -94,14 +108,15 @@ const CreateBlog = () => {
                 onChange={(e) => setB_tieuDe(e.target.value)}
               ></Input>
             </div>
-            <div className="col-sm-5 mt-4 text-end">
+            <div className="col-sm-5 text-start mt-4">
               <Select
                 size="large"
                 onChange={(value) => setIdCategorySelected(value)}
                 style={{ width: "fitContent" }}
-                defaultValue="Chọn danh mục liên quan"
+                className=""
+                defaultValue="Chọn danh mục sản phẩm"
               >
-                <Select.Option value="">Chọn danh mục liên quan</Select.Option>
+                <Select.Option value="">Chọn danh mục sản phẩm</Select.Option>
                 {categorys &&
                   categorys.map((category) => (
                     <Select.Option
@@ -114,11 +129,40 @@ const CreateBlog = () => {
               </Select>
             </div>
           </div>
-          <div className="description-blog">
-            <p className="description-blog" style={{ textAlign: "left" }}>
+
+          <div className="col-sm-5 text-start">
+            <Upload
+              name="avatar"
+              listType="picture-card"
+              className="avatar-uploader col-sm-8"
+              showUploadList={false}
+              onChange={onChangeFiles}
+            >
+              {file_images.length >= 1 ? (
+                <img
+                  src={file_images}
+                  style={{
+                    width: "100%",
+                  }}
+                  alt="Thêm ảnh bìa"
+                />
+              ) : (
+                <div>
+                  <PlusOutlined />
+                  <div>Thêm ảnh bìa</div>
+                </div>
+              )}
+            </Upload>
+          </div>
+
+          <div className="description-blog mt-2">
+            <p
+              className="description-blog m-0 p-0"
+              style={{ textAlign: "left" }}
+            >
               Nội dung blog:
             </p>
-            <div style={{ border: "1px solid red" }}>
+            <div>
               <div>
                 <ReactQuill
                   modules={module}
@@ -129,21 +173,11 @@ const CreateBlog = () => {
               </div>
             </div>
           </div>
-          <div className="col-sm-10 m-auto pb-3">
-            <p className="img-blog" style={{ textAlign: "left" }}>
-              Ảnh bìa blog:
-            </p>
-            <Upload multiple={true} accept="image/*" onChange={onChangeFiles}>
-              <Button icon={<UploadOutlined />} size="large" className="my-3">
-                Click to Upload
-              </Button>
-            </Upload>
-          </div>
 
-          <div className=" col-sm-11 mx-auto d-flex justify-content-end mb-3">
+          <div className=" col-sm-12 mx-auto d-flex justify-content-end mt-4">
             {!is_loading ? (
               <Button
-                className="btn btn-upload-product"
+                className="btn btn-upload-blog"
                 size="large"
                 onClick={createBlog}
               >

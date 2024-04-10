@@ -133,7 +133,8 @@ function TKSPBanChay() {
   }, []);
 
   return (
-    <div className="col-sm-6 pe-4">
+    <div className="container-home container">
+      <div className="title-primary pb-4">Thống kê sản phẩm bán chạy</div>
       <Bar options={options} data={datatest ? datatest : data} />
     </div>
   );
