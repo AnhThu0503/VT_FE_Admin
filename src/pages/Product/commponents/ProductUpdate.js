@@ -409,7 +409,7 @@ const ProductUpdate = () => {
                 <LoadingOutlined />
               )}
             </div>
-            <div>
+            <div className="col-sm-12 text-start">
               <Upload
                 multiple={true}
                 accept="image/*"
