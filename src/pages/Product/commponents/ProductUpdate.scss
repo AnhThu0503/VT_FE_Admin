@@ -21,6 +21,11 @@
         color: #333;
         text-transform: uppercase;
     }
+    .btn-delete{
+        &:hover{
+            cursor: pointer;
+        }
+    }
 
 
 
