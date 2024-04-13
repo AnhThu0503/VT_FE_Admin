@@ -3,9 +3,12 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Input, Select, Button, Upload, message } from "antd";
 import axios from "axios";
-import { UploadOutlined } from "@ant-design/icons";
 import "./CreateBlog.scss";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
+import { notification } from "antd";
+import { useNavigate } from "react-router-dom";
+
+const key = "updatable";
 
 async function readAsDataURL(file) {
   return new Promise((resolve, reject) => {
@@ -40,6 +43,9 @@ const CreateBlog = () => {
   const [B_tieuDe, setB_tieuDe] = useState();
   const [is_loading, setLoading] = useState(false);
   const [file_images, setFileImages] = useState([]);
+  const [api, contextHolder] = notification.useNotification();
+  const navigate = useNavigate();
+
   const module = {
     toolbar: toolbarOptions,
   };
@@ -56,16 +62,39 @@ const CreateBlog = () => {
     }
   };
   const createBlog = async () => {
-    setLoading(true);
-    const response = await axios.post("/api/admin/blog", {
-      id_category_selected,
-      B_tieuDe,
-      value,
-      file_images,
-    });
-    setLoading(false);
-    setB_tieuDe("");
-    setValue("");
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/admin/blog", {
+        id_category_selected,
+        B_tieuDe,
+        value,
+        file_images,
+      });
+      if (response.data) {
+        api.open({
+          key,
+          type: "success",
+          message: "Tạo blog thành công!",
+        });
+
+        setLoading(false);
+        setB_tieuDe("");
+        setValue("");
+        navigate("/blog");
+      } else {
+        api.open({
+          key,
+          type: "error",
+          message: "Tạo blog nhập thất bại!",
+        });
+      }
+    } catch (e) {
+      api.open({
+        key,
+        type: "error",
+        message: "Tạo blog nhập thất bại!",
+      });
+    }
   };
   const onChangeFiles = async (info) => {
     let array_base = [];
@@ -90,6 +119,8 @@ const CreateBlog = () => {
   return (
     <div>
       <div className="container-blog pb-4">
+        {contextHolder}
+
         <div className="title-primary text-center">Tạo Blog</div>
         <div className="">
           <div

@@ -9,6 +9,7 @@ import {
   BsReceiptCutoff,
   BsTicketPerforated,
   BsFillTagsFill,
+  BsTruck,
 } from "react-icons/bs";
 const { SubMenu } = Menu;
 
@@ -83,6 +84,12 @@ const Nav = () => {
         <Link to="/order-nhap" style={{ textDecoration: "none" }}>
           <BsReceiptCutoff className="fs-5 mb-2 me-3" />
           Quản lý đơn nhập
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="/supplier" className="py-4">
+        <Link to="/supplier" style={{ textDecoration: "none" }}>
+          <BsTruck className="fs-5 mb-2 me-3" />
+          Quản lý nhà cung cấp
         </Link>
       </Menu.Item>
       <Menu.Item key="/user" className="py-4">

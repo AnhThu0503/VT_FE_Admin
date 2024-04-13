@@ -5,7 +5,13 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Button, Upload } from "antd";
 import { Select } from "antd";
 import { Input } from "antd";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { notification } from "antd";
+import { useNavigate } from "react-router-dom";
+
 const { TextArea } = Input;
+const key = "updatable";
 
 async function readAsDataURL(file) {
   return new Promise((resolve, reject) => {
@@ -32,13 +38,34 @@ function OrderN() {
   const [giaNhap, setGiaNhap] = useState();
   const [ngayNhap, setNgayNhap] = useState();
   const [noiDung, setNoiDung] = useState();
-  const [moTa, setMoTa] = useState();
+  const [moTa, setMoTa] = useState("");
   const [dmsp_id, setDMSPID] = useState(1);
   const [id_category_selected, setIdCategorySelected] = useState();
   const [id_supplier_selected, setIdsupplierSelected] = useState();
   const [file_images, setFileImages] = useState([]);
   const [is_loading, setLoading] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+  const navigate = useNavigate();
 
+  const toolbarOptions = [
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["blockquote", "code-block"],
+    ["link", "formula"],
+    [{ header: 1 }, { header: 2 }], // custom button values
+    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+    [{ script: "sub" }, { script: "super" }], // superscript/subscript
+    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+    [{ direction: "rtl" }], // text direction
+    [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
+    ["clean"], // remove formatting button
+  ];
+  const module = {
+    toolbar: toolbarOptions,
+  };
   useEffect(() => {
     getAllCategoryAndSupplier();
   }, []);
@@ -61,34 +88,57 @@ function OrderN() {
   }
 
   const uploadProduct = async () => {
-    setLoading(true);
-    const response = await axios.post("/api/admin/product", {
-      id_category_selected,
-      id_supplier_selected,
-      name,
-      NSX,
-      HSD,
-      trongLuong,
-      donViTinh,
-      soLuong,
-      tongTien,
-      giaBan,
-      ngayNhap,
-      giaNhap,
-      noiDung,
-      moTa,
-      dmsp_id,
-      file_images,
-    });
-    setLoading(false);
-    setName("");
-    setTrongLuong(0);
-    setTongTien(0);
-    setGiaBan(0);
-    setGiaNhap(0);
-    setSoLuong(1);
-    setNoiDung("");
-    setMoTa("");
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/admin/product", {
+        id_category_selected,
+        id_supplier_selected,
+        name,
+        NSX,
+        HSD,
+        trongLuong,
+        donViTinh,
+        soLuong,
+        tongTien,
+        giaBan,
+        ngayNhap,
+        giaNhap,
+        noiDung,
+        moTa,
+        dmsp_id,
+        file_images,
+      });
+      if (response.data) {
+        api.open({
+          key,
+          type: "success",
+          message: "Tạo hóa đơn nhập thành công!",
+        });
+        setLoading(false);
+        setName("");
+        setTrongLuong(0);
+        setTongTien(0);
+        setGiaBan(0);
+        setGiaNhap(0);
+        setSoLuong(1);
+        setNoiDung("");
+        setFileImages([]); // Clear the file_images state
+        setMoTa("");
+        navigate("/order-nhap");
+      } else {
+        api.open({
+          key,
+          type: "error",
+          message: "Tạo hóa đơn nhập thất bại!",
+        });
+      }
+    } catch (e) {
+      api.open({
+        key,
+        type: "error",
+        message: "Tạo hóa đơn nhập thất bại!",
+      });
+    }
   };
 
   const onChangeFiles = async (info) => {
@@ -111,6 +161,7 @@ function OrderN() {
 
   return (
     <div className="container-upload pb-4">
+      {contextHolder}
       <div className="title-primary text-center">Hóa đơn nhập hàng</div>
       <div className="row">
         <div className="m-auto p-auto">
@@ -338,14 +389,13 @@ function OrderN() {
               <p className="product-name" style={{ textAlign: "left" }}>
                 Mô tả
               </p>
-              <TextArea
-                cols="30"
-                rows="8"
-                title=""
-                className="col-sm-12"
+
+              <ReactQuill
+                modules={module}
+                theme="snow"
                 value={moTa}
-                onChange={(e) => setMoTa(e.target.value)}
-              ></TextArea>
+                onChange={setMoTa}
+              ></ReactQuill>
             </div>
             <div className="col-sm-10 m-auto pb-3">
               <Upload multiple={true} accept="image/*" onChange={onChangeFiles}>

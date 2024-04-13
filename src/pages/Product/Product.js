@@ -13,6 +13,7 @@ const Product = () => {
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
   const [giabd, setGiabd] = useState();
   const [thoigia, setthoigia] = useState();
+  const [moTa, setMoTa] = useState();
   const handleProductEdit = (record) => {
     navigate(`/product-edit/${record.key}`);
   };
@@ -84,6 +85,8 @@ const Product = () => {
       console.log("response data", response.data);
       let formattedData = [];
       response.data.products.forEach((item, index) => {
+        setMoTa(item.SP_moTa);
+        console.log("item.images", item.images);
         formattedData.push({
           key: item.SP_id,
           SP_id: item.SP_id,
@@ -95,7 +98,7 @@ const Product = () => {
           SP_NSX: item.SP_NSX,
           SP_HSD: item.SP_HSD,
           SP_moTa: item.SP_moTa,
-          SP_image: item.image,
+          SP_image: item.images,
           DMSP_ten: item.category.DMSP_ten,
           SP_giaBanDau: item.G_giaBanDau,
           SP_thoiGia:
@@ -192,13 +195,20 @@ const Product = () => {
           Trọng lượng: {detailProduct?.SP_trongLuong}{" "}
           {detailProduct?.SP_donViTinh}
         </p>
-        <p className="p-0 m-0">Mô tả: {detailProduct?.SP_moTa}</p>
-        <img
-          key={1}
-          src={detailProduct?.SP_image ? detailProduct.SP_image : ""}
-          alt="Hình ảnh sản phẩm"
-          style={{ width: "100px", height: "100px" }}
+        <p
+          className="p-0 m-0 mota"
+          dangerouslySetInnerHTML={{ __html: moTa }}
         />
+        {detailProduct?.SP_image &&
+          detailProduct.SP_image.map((image, index) => (
+            <img
+              className="mx-1"
+              key={1}
+              src={image.HA_URL ? image.HA_URL : ""}
+              alt="Hình ảnh sản phẩm"
+              style={{ width: "100px", height: "80px" }}
+            />
+          ))}
       </Modal>
     </div>
   );

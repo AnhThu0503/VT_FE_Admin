@@ -8,6 +8,8 @@ import { Upload } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { BsTrash } from "react-icons/bs";
 import { UploadOutlined } from "@ant-design/icons";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 const { TextArea } = Input;
 const key = "updatable";
 async function readAsDataURL(file) {
@@ -34,7 +36,7 @@ const ProductUpdate = () => {
   const [filelist, setfilelist] = useState();
   const [falg, setFalg] = useState(false);
   const [is_loading, setLoading] = useState(false);
-
+  const [moTa, setMoTa] = useState("");
   const navigation = useNavigate();
   useEffect(() => {
     getAllCategoryAndSupplier();
@@ -46,6 +48,25 @@ const ProductUpdate = () => {
     } catch (e) {
       console.error(e);
     }
+  };
+  const toolbarOptions = [
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["blockquote", "code-block"],
+    ["link", "formula"],
+    [{ header: 1 }, { header: 2 }], // custom button values
+    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+    [{ script: "sub" }, { script: "super" }], // superscript/subscript
+    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+    [{ direction: "rtl" }], // text direction
+    [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
+    ["clean"], // remove formatting button
+  ];
+  const module = {
+    toolbar: toolbarOptions,
   };
   useEffect(() => {
     const getProduct = async () => {
@@ -67,7 +88,7 @@ const ProductUpdate = () => {
             DMSP_id: category[0].DMSP_id,
           });
           setIdCategorySelected(category[0].DMSP_id);
-
+          setMoTa(product[0].SP_moTa);
           // Map images array to include both HA_URL and HA_ID
           const fileImages = images.map((image) => ({
             HA_URL: image.HA_URL,
@@ -133,12 +154,12 @@ const ProductUpdate = () => {
         SP_NSX: validateDate(values.SP_NSX),
         SP_HSD: validateDate(values.SP_HSD),
         SP_trongLuong: values.SP_trongLuong,
-        SP_moTa: values.SP_moTa,
         G_thoiGia: values.G_thoiGia,
         id_category_selected,
         file_images,
         filelist,
         file_imagesadd,
+        moTa,
       });
       // console.log(response);
       if (response.data) {
@@ -359,17 +380,13 @@ const ProductUpdate = () => {
               <Input size="large" />
             </Form.Item>
           </div>
-          <Form.Item
-            label="Mô tả"
-            name="SP_moTa"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng không để trống mô tả!",
-              },
-            ]}
-          >
-            <TextArea size="large" rows={3} />
+          <Form.Item label="Mô tả">
+            <ReactQuill
+              modules={module}
+              theme="snow"
+              value={moTa}
+              onChange={setMoTa}
+            ></ReactQuill>
           </Form.Item>
 
           <Form.Item>

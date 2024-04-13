@@ -22,6 +22,7 @@ import TKSPBanChay from "./pages/Home/Components/TKSPBanChay";
 import TKSPBanCham from "./pages/Home/Components/TKSPBanCham";
 import Blog from "./pages/Blog/Blog";
 import UpdateBlog from "./pages/Blog/components/UpdateBlog";
+import Suppliers from "./pages/Suppliers/Suppliers";
 const { Content, Sider } = Layout;
 
 const App = () => {
@@ -89,6 +90,8 @@ const App = () => {
                 <Route path="/discount/add" element={<DiscountAdd />} />
                 <Route path="/discount-edit/:id" element={<DiscountUpdate />} />
                 <Route path="/category" element={<Category />} />
+                <Route path="/supplier" element={<Suppliers />} />
+
                 <Route path="/product" element={<Product />} />
                 <Route path="/product-edit/:id" element={<ProductUpdate />} />
                 <Route path="/user-edit/:id" element={<UserUpdate />} />

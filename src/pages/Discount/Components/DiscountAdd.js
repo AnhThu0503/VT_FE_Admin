@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Select, Input } from "antd";
 import "./DiscountUpdate.scss";
+import { notification } from "antd";
+const key = "updatable";
+
 const { TextArea } = Input;
 
 async function readAsDataURL(file) {
@@ -22,6 +25,7 @@ function DiscountAdd() {
   const [KM_mucGiamGia, setKM_mucGiamGia] = useState();
   const [id_product_selected, setIdProductSelected] = useState();
   const [is_loading, setLoading] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     getAllProductSelect();
@@ -36,21 +40,44 @@ function DiscountAdd() {
   };
 
   const uploadDiscount = async () => {
-    setLoading(true);
-    const response = await axios.post("/api/admin/discount", {
-      id_product_selected,
-      KM_noiDung,
-      KM_ngayBatDau,
-      KM_ngayKetThuc,
-      KM_mucGiamGia,
-    });
-    setLoading(false);
-    setKM_noiDung("");
-    setKM_mucGiamGia(0);
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/admin/discount", {
+        id_product_selected,
+        KM_noiDung,
+        KM_ngayBatDau,
+        KM_ngayKetThuc,
+        KM_mucGiamGia,
+      });
+      if (response.data) {
+        api.open({
+          key,
+          type: "success",
+          message: "Tạo khuyến mãi thành công!",
+        });
+        setLoading(false);
+        setKM_noiDung("");
+        setKM_mucGiamGia(0);
+      } else {
+        api.open({
+          key,
+          type: "error",
+          message: "Tạo khuyến mãi thất bại!",
+        });
+      }
+    } catch (e) {
+      api.open({
+        key,
+        type: "error",
+        message: "Tạo khuyến mãi thất bại!",
+      });
+    }
   };
 
   return (
     <div className="container-upload-discount pb-4">
+      {contextHolder}
+
       <div className="title-primary text-center">Tạo khuyến mãi</div>
       <div className="row">
         <div className=" col-sm-11 text-end mx-auto">

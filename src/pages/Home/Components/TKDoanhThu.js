@@ -5,7 +5,7 @@ import "./TKDoanhThu.scss";
 const TKDoanhThu = () => {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-  const [doanhThu, setDoanhThu] = useState([]);
+  const [doanhThu, setDoanhThu] = useState();
 
   const collectStatic = async () => {
     try {

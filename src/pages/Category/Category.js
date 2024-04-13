@@ -2,16 +2,42 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Table, Button, Input } from "antd";
 import "./Category.scss";
+import { notification } from "antd";
+const key = "updatable";
+
 function Category() {
   const [name, setName] = useState();
   const [categorys, setCategorys] = useState([]);
   const [falg, setFalg] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
 
   const uploadProductCategory = async () => {
-    const response = await axios.post("/api/admin/category", {
-      name,
-    });
-    setFalg(!falg);
+    try {
+      const response = await axios.post("/api/admin/category", {
+        name,
+      });
+      if (response.data) {
+        api.open({
+          key,
+          type: "success",
+          message: "Tạo danh mục sản phẩm thành công!",
+        });
+        setFalg(!falg);
+        setName("");
+      } else {
+        api.open({
+          key,
+          type: "error",
+          message: "Tạo danh mục sản phẩm thất bại!",
+        });
+      }
+    } catch (e) {
+      api.open({
+        key,
+        type: "error",
+        message: "Tạo danh mục sản phẩm thất bại!",
+      });
+    }
   };
   useEffect(() => {
     getAllCategory();
@@ -91,9 +117,19 @@ function Category() {
       // Check if the request was successful
       if (response.status === 200) {
         console.log("Category deleted successfully");
+        api.open({
+          key,
+          type: "success",
+          message: "Xóa danh mục sản phẩm thành công!",
+        });
         setFalg(!falg);
       } else {
         console.log("Failed to delete category");
+        api.open({
+          key,
+          type: "error",
+          message: "Xóa danh mục sản phẩm thất bại!",
+        });
         // Optionally, you can return false to indicate failure
       }
     } catch (error) {
@@ -105,6 +141,8 @@ function Category() {
   };
   return (
     <div className="container-category">
+      {contextHolder}
+
       <div className="text-center title-primary pb-4">Quản lý danh mục</div>
       <div className="col-sm-6 pb-4" style={{ textAlign: "left" }}>
         <Input
