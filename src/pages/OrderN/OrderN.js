@@ -36,7 +36,7 @@ function OrderN() {
   const [tongTien, setTongTien] = useState();
   const [giaBan, setGiaBan] = useState(0);
   const [giaNhap, setGiaNhap] = useState();
-  const [ngayNhap, setNgayNhap] = useState();
+  const [ngayNhap, setNgayNhap] = useState(getCurrentDate());
   const [noiDung, setNoiDung] = useState();
   const [moTa, setMoTa] = useState("");
   const [dmsp_id, setDMSPID] = useState(1);
@@ -79,6 +79,14 @@ function OrderN() {
       console.error(e);
     }
   };
+  function getCurrentDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
   function formatDate(dateObject) {
     const date = new Date(dateObject);
     const day = String(date.getDate()).padStart(2, "0"); // Ensure two digits, pad with 0 if necessary
@@ -188,7 +196,7 @@ function OrderN() {
               <Select
                 onChange={(value) => setIdCategorySelected(value)}
                 style={{ width: 180 }}
-                defaultValue=""
+                value={1}
                 size="large"
               >
                 <Select.Option value="">Chọn danh mục</Select.Option>
@@ -209,7 +217,7 @@ function OrderN() {
                   width: 180,
                   marginLeft: "2rem",
                 }}
-                defaultValue=""
+                value={1}
                 size="large"
               >
                 <Select.Option value="">Chọn nhà cung cấp</Select.Option>

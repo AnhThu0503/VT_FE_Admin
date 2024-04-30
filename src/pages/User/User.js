@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Table, Button, notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import "./User.scss";
+import { BsPlusCircle } from "react-icons/bs";
 const key = "updatable";
 const User = () => {
   const [users, setUsers] = useState();
@@ -111,6 +112,12 @@ const User = () => {
     <div className="container-category">
       {contextHolder}
       <div className="text-center title-primary pb-4">Quản lý người dùng</div>
+      <div className="text-end mb-4">
+        <Button size="large" className="btn-add">
+          Tạo người dùng
+          <BsPlusCircle className="fs-5 ms-2 mb-1" />
+        </Button>
+      </div>
       <Table columns={columns} dataSource={users} style={{}} />
     </div>
   );

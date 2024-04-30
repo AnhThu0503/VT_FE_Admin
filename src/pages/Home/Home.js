@@ -9,9 +9,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Input, Button } from "antd";
 import TKDoanhThu from "./Components/TKDoanhThu";
+import { BsCalendarX } from "react-icons/bs";
+
 const Home = () => {
   const [numOrders, setNumOrders] = useState(0);
   const [numProducts, setNumProducts] = useState(0);
+  const [numProductsHSD, setNumProductsHSD] = useState(0);
   const [numUsers, setNumUsers] = useState(0);
   const [numOrdersConfirm, setNumOrdersConfirm] = useState(0);
   useEffect(() => {
@@ -19,6 +22,7 @@ const Home = () => {
     countProduct();
     countUser();
     countOrderConfirm();
+    countProductsHSD();
   }, []);
   const countOrder = async () => {
     try {
@@ -52,6 +56,18 @@ const Home = () => {
       }
       const data = await response.json();
       setNumProducts(data.numProducts);
+    } catch (error) {
+      console.error("Error fetching number of orders:", error);
+    }
+  };
+  const countProductsHSD = async () => {
+    try {
+      const response = await fetch("/api/admin/products-count-hsd"); // Replace with your endpoint
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setNumProductsHSD(data.numProducts);
     } catch (error) {
       console.error("Error fetching number of orders:", error);
     }
@@ -120,12 +136,12 @@ const Home = () => {
             className="col-sm-3 pt-4 pb-4"
             style={{ backgroundColor: "#F19B30" }}
           >
-            <BsPeople className="fs-2 mt-2" style={{ color: "#ffffff" }} />
+            <BsCalendarX className="fs-2 mt-2" style={{ color: "#ffffff" }} />
           </div>
           <div className="col-sm-7 " style={{ border: "1px solid #F19B30" }}>
-            <p className="p-0 m-0 fs-3">{numUsers}</p>
-            <p className="p-0 m-0">Thành viên</p>
-            <Link to="/user">Chi tiết</Link>
+            <p className="p-0 m-0 fs-3">{numProductsHSD}</p>
+            <p className="p-0 m-0">Sản phẩm hết HSD</p>
+            <Link to="/product">Chi tiết</Link>
           </div>
         </div>
       </div>

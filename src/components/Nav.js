@@ -11,6 +11,8 @@ import {
   BsFillTagsFill,
   BsTruck,
 } from "react-icons/bs";
+import { MdOutlineLogout } from "react-icons/md";
+
 const { SubMenu } = Menu;
 
 const Nav = () => {
@@ -46,6 +48,11 @@ const Nav = () => {
             Sản phẩm bán chậm
           </Link>
         </Menu.Item>
+        <Menu.Item key="/product-stock">
+          <Link to="/product-stock" style={{ textDecoration: "none" }}>
+            Sản phẩm tồn kho
+          </Link>
+        </Menu.Item>
       </SubMenu>
       <Menu.Item key="/blog" className="py-4">
         <Link to="/blog" style={{ textDecoration: "none" }}>
@@ -59,13 +66,7 @@ const Nav = () => {
           Quản lý khuyến mãi
         </Link>
       </Menu.Item>
-      <Menu.Item key="/category" className="py-4">
-        <Link to="/category" style={{ textDecoration: "none" }}>
-          {" "}
-          <BsListUl className="fs-5 mb-1 me-3" />
-          Quản lý danh mục
-        </Link>
-      </Menu.Item>
+
       <Menu.Item key="/product" className="py-4">
         <Link to="/product" style={{ textDecoration: "none" }}>
           {" "}
@@ -83,7 +84,20 @@ const Nav = () => {
       <Menu.Item key="/order-nhap" className="py-4">
         <Link to="/order-nhap" style={{ textDecoration: "none" }}>
           <BsReceiptCutoff className="fs-5 mb-2 me-3" />
-          Quản lý đơn nhập
+          Quản lý nhập hàng
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="/user" className="py-4">
+        <Link to="/user" style={{ textDecoration: "none" }}>
+          <BsFillPersonFill className="fs-5 mb-1 me-3" />
+          Quản lý người dùng
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="/category" className="py-4">
+        <Link to="/category" style={{ textDecoration: "none" }}>
+          {" "}
+          <BsListUl className="fs-5 mb-1 me-3" />
+          Quản lý danh mục
         </Link>
       </Menu.Item>
       <Menu.Item key="/supplier" className="py-4">
@@ -92,10 +106,10 @@ const Nav = () => {
           Quản lý nhà cung cấp
         </Link>
       </Menu.Item>
-      <Menu.Item key="/user" className="py-4">
-        <Link to="/user" style={{ textDecoration: "none" }}>
-          <BsFillPersonFill className="fs-5 mb-1 me-3" />
-          Quản lý người dùng
+      <Menu.Item key="/supplier" className="py-4">
+        <Link to="/supplier" style={{ textDecoration: "none" }}>
+          <MdOutlineLogout className="fs-5 mb-1 me-3" />
+          Đăng xuất
         </Link>
       </Menu.Item>
     </Menu>

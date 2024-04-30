@@ -1,9 +1,12 @@
 import "./Product.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Table, Button, Modal } from "antd";
+import { Table, Button, Modal, Input, Space } from "antd";
 import { useParams } from "react-router-dom";
+import { SearchOutlined } from "@ant-design/icons";
+import Highlighter from "react-highlight-words";
 
 const Product = () => {
   let navigate = useNavigate();
@@ -14,13 +17,139 @@ const Product = () => {
   const [giabd, setGiabd] = useState();
   const [thoigia, setthoigia] = useState();
   const [moTa, setMoTa] = useState();
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
   const handleProductEdit = (record) => {
     navigate(`/product-edit/${record.key}`);
   };
   const [products, setProducts] = useState([]);
+
   useEffect(() => {
     getAllProduct();
   }, [falg]);
+  const validateDate = (date) => {
+    const dateString = date;
+    const dateParts = dateString.split("-");
+    const year = parseInt(dateParts[2]);
+    const month = parseInt(dateParts[1]) - 1; // Months in JavaScript are zero-based
+    const day = parseInt(dateParts[0]);
+    const dateObject = new Date(year, month, day);
+    const isoDateString = dateObject.toISOString();
+
+    return isoDateString;
+  };
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Tìm sản phẩm`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: "block",
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? "#1677ff" : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: "#ffc069",
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
   const columns = [
     {
       title: "STT",
@@ -29,6 +158,8 @@ const Product = () => {
     {
       title: "TÊN SẢN PHẨM",
       dataIndex: "SP_ten",
+      key: "SP_ten",
+      ...getColumnSearchProps("SP_ten"),
     },
     {
       title: "SỐ LƯỢNG",
@@ -42,6 +173,10 @@ const Product = () => {
     {
       title: "GIÁ BÁN",
       dataIndex: "thoiGia",
+    },
+    {
+      title: "HSD",
+      dataIndex: "SP_HSD",
     },
     {
       title: "DANH MỤC SẢN PHẨM",
@@ -96,7 +231,7 @@ const Product = () => {
           SP_trongLuong: item.SP_trongLuong,
           SP_donViTinh: item.SP_donViTinh,
           SP_NSX: item.SP_NSX,
-          SP_HSD: item.SP_HSD,
+          SP_HSD: dayjs(item.SP_HSD).format("DD-MM-YYYY"),
           SP_moTa: item.SP_moTa,
           SP_image: item.images,
           DMSP_ten: item.category.DMSP_ten,

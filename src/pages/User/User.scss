@@ -18,4 +18,14 @@
             border: 1px solid #ff4d00 !important;
         }
     }
+    .btn-add {
+        background-color: #ff4d00;
+        color: #fff;
+
+        &:hover {
+            border: 1px solid #ff4d00 !important;
+            color: #ff4d00 !important;
+            background-color: #fff !important;
+        }
+    }
 }

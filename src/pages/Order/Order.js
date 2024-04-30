@@ -1,10 +1,11 @@
-import { Table, Button, Select, Modal } from "antd";
+import { Table, Button, Select, Modal, Input, Space } from "antd";
 import "./Order.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { notification } from "antd";
 import { useReactToPrint } from "react-to-print";
-import { useRef } from "react";
+import { SearchOutlined } from "@ant-design/icons";
+import Highlighter from "react-highlight-words";
 const key = "updatable";
 
 function Order() {
@@ -15,25 +16,36 @@ function Order() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
   const [api, contextHolder] = notification.useNotification();
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
 
   useEffect(() => {
     getAllOrder();
   }, []);
-
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
   const getAllOrder = async () => {
     try {
       const response = await axios.get("/api/admin/orders");
-
       let arrtmp = [];
-      response.data.forEach((data) => {
+      response.data.forEach((data, index) => {
         arrtmp = [
           ...arrtmp, // Spread the current items in arrtmp
           {
             DH_id: data.order.DH_id,
             key: data.order.DH_id,
-            index: data.order.DH_id,
+            index: index + 1,
             DH_trangThai: data.order.DH_trangThai,
             chiTietKH: data.user[0],
+            tenKH: data.user[0].ND_ten,
             DH_ngayDat: formatDate(data.order.DH_ngayDat),
             DH_phuongThucTT: data.order.DH_phuongThucTT,
             DonHangCT: data.detailOrderProduct,
@@ -86,16 +98,123 @@ function Order() {
   const handleOpenPDF = useReactToPrint({
     content: () => componentPDF.current,
   });
-
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Tìm khách hàng`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: "block",
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? "#1677ff" : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: "#ffc069",
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
   const columns = [
     {
       title: "STT",
       dataIndex: "index",
       key: "index",
     },
-
     {
       title: "THÔNG TIN KHÁCH HÀNG",
+      dataIndex: "tenKH",
+      key: "tenKH",
+      ...getColumnSearchProps("tenKH"),
+    },
+
+    {
+      title: "",
       dataIndex: "chiTietKH",
       key: "chiTietKH",
       render: (_, record) => {
@@ -142,7 +261,7 @@ function Order() {
             options={[
               { value: "Chờ xác nhận", label: "Chờ xác nhận" },
               { value: "Đang xử lý", label: "Đang xử lý" },
-              { value: "Đã nhận hàng", label: "Đã nhận hàng" },
+              { value: "Đang vận chuyển", label: "Đang vận chuyển" },
               { value: "Hủy đơn hàng", label: "Hủy đơn hàng" },
             ]}
           />
@@ -152,7 +271,6 @@ function Order() {
         { text: "Đang xử lý", value: "Đang xử lý" },
         { text: "Chờ xác nhận", value: "Chờ xác nhận" },
         { text: "Đang vận chuyển", value: "Đang vận chuyển" },
-        { text: "Đã nhận hàng", value: "Đã nhận hàng" },
         { text: "Hủy đơn hàng", value: "Hủy đơn hàng" },
       ],
       onFilter: (value, record) => {
@@ -259,6 +377,7 @@ function Order() {
                 <th scope="col">Tên sản phẩm</th>
                 <th scope="col">Trọng lượng</th>
                 <th scope="col">Số lượng</th>
+                <th scope="col">Đơn giá</th>
               </tr>
             </thead>
             <tbody>
@@ -272,6 +391,12 @@ function Order() {
                         {item[0].SP_trongLuong} {item[0].SP_donViTinh}
                       </td>
                       <td>{item.soluong}</td>
+                      <td>
+                        {item.giaBan.toLocaleString("vi", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </td>
                     </tr>
                   );
                 })}

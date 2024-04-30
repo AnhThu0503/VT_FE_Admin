@@ -20,24 +20,34 @@ function ImpOrder() {
     getAllOrderN();
   }, []);
 
+  const sumPrice = (products) => {
+    let sum = 0;
+    products.map((product) => {
+      sum += product.soluong * product.giaNhap;
+    });
+    return sum;
+  };
   const getAllOrderN = async () => {
     try {
       const response = await axios.get("/api/admin/ordersN");
 
       let arrtmp = [];
-      response.data.forEach((data) => {
+      response.data.forEach((data, index) => {
         arrtmp = [
           ...arrtmp, // Spread the current items in arrtmp
           {
             HDN_id: data.orderN.HDN_id,
-            key: data.orderN.HDN_id,
+            key: index + 1,
             index: data.orderN.HDN_id,
             HDN_noiDung: data.orderN.HDN_noiDung,
             HDN_CT: data.detailOrderProductN,
-            HDN_tongTien: data.orderN.HDN_tongTien.toLocaleString("vi", {
-              style: "currency",
-              currency: "VND",
-            }),
+            HDN_tongTien: sumPrice(data.detailOrderProductN).toLocaleString(
+              "vi",
+              {
+                style: "currency",
+                currency: "VND",
+              }
+            ),
             HDN_ngayNhap: formatDate(data.orderN.HDN_ngayNhap),
           },
         ];

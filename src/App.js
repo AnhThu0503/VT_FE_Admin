@@ -23,12 +23,14 @@ import TKSPBanCham from "./pages/Home/Components/TKSPBanCham";
 import Blog from "./pages/Blog/Blog";
 import UpdateBlog from "./pages/Blog/components/UpdateBlog";
 import Suppliers from "./pages/Suppliers/Suppliers";
+import TKSPTonKho from "./pages/Home/Components/TKSPTonKho";
 const { Content, Sider } = Layout;
 
 const App = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
   return (
     <BrowserRouter>
       <Layout hasSider>
@@ -105,6 +107,8 @@ const App = () => {
                 <Route path="/user" element={<User />} />
                 <Route path="/product-best" element={<TKSPBanChay />} />
                 <Route path="/product-slow" element={<TKSPBanCham />} />
+                <Route path="/product-stock" element={<TKSPTonKho />} />
+
                 <Route path="/static" element={<Home />} />
                 <Route path="/" element={<Home />} exact />
               </Routes>

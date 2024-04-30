@@ -1,11 +1,55 @@
-import { Input, Button, Table } from "antd"; // Import Table component from antd
+import { Input, Button } from "antd"; // Import Table component from antd
 import axios from "axios";
 import { useState } from "react";
 import "./TKDoanhThu.scss";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+export const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top",
+    },
+    title: {
+      display: true,
+      text: "Thống kê doanh thu",
+    },
+  },
+};
+const labels = ["Doanh thu"];
+const dataset2Data = [0, 200, 400, 600, 800, 1000];
+export const data = {
+  labels,
+  datasets: [
+    {
+      label: "Doanh thu",
+      data: dataset2Data,
+      backgroundColor: "rgba(53, 162, 235, 0.5)",
+    },
+  ],
+};
+
 const TKDoanhThu = () => {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-  const [doanhThu, setDoanhThu] = useState();
+  const [labesSet, setLabesSet] = useState();
+  const [datatest, setData] = useState();
 
   const collectStatic = async () => {
     try {
@@ -15,27 +59,26 @@ const TKDoanhThu = () => {
           endDate: endDate,
         },
       });
-      console.log("collect>>>>", response.data);
-      if (response.data) setDoanhThu(response.data);
-    } catch (e) {
-      console.log(e);
+
+      const { revenueArray } = response.data;
+
+      const labels = revenueArray.map((entry) => entry.ngay);
+      const data = revenueArray.map((entry) => entry.doanhThu);
+
+      setData({
+        labels: labels,
+        datasets: [
+          {
+            label: "Doanh thu",
+            data: data,
+            backgroundColor: "rgba(53, 162, 235, 0.5)",
+          },
+        ],
+      });
+    } catch (error) {
+      console.error(error);
     }
   };
-
-  // Define columns for the table
-  const columns = [
-    {
-      title: "Tháng",
-      dataIndex: "Thang",
-      key: "Thang",
-    },
-    {
-      title: "Doanh thu",
-      dataIndex: "DoanhThu",
-      key: "DoanhThu",
-    },
-  ];
-
   return (
     <div className="container-doanhthu mt-4 pt-4">
       <h5 className="title-secon" style={{ textAlign: "left" }}>
@@ -80,9 +123,10 @@ const TKDoanhThu = () => {
             </Button>
           </div>
         </div>
-
-        {/* Render the table */}
-        <Table dataSource={doanhThu} columns={columns} className="mt-4" />
+      </div>
+      <div className="col-sm-12">
+        {" "}
+        <Bar options={options} data={datatest ? datatest : data} />
       </div>
     </div>
   );
