@@ -151,8 +151,7 @@ const ProductUpdate = () => {
         SP_ten: values.SP_ten,
         SP_soLuong: values.SP_soLuong,
         SP_donViTinh: values.SP_donViTinh,
-        SP_NSX: validateDate(values.SP_NSX),
-        SP_HSD: validateDate(values.SP_HSD),
+
         SP_trongLuong: values.SP_trongLuong,
         G_thoiGia: values.G_thoiGia,
         id_category_selected,

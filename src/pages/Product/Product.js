@@ -188,7 +188,13 @@ const Product = () => {
       render: (_, record) => (
         <div style={{ textAlign: "right" }}>
           {" "}
-          <Button onClick={() => handleProductEdit(record)}>Cập nhật</Button>
+          <Button
+            onClick={() => handleProductEdit(record)}
+            type="primary"
+            ghost
+          >
+            Cập nhật
+          </Button>
           <Button
             onClick={() => deleteProduct(record)}
             className="mx-2"

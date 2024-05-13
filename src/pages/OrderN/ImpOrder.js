@@ -37,8 +37,8 @@ function ImpOrder() {
           ...arrtmp, // Spread the current items in arrtmp
           {
             HDN_id: data.orderN.HDN_id,
-            key: index + 1,
-            index: data.orderN.HDN_id,
+            key: data.orderN.HDN_id,
+            index: index + 1,
             HDN_noiDung: data.orderN.HDN_noiDung,
             HDN_CT: data.detailOrderProductN,
             HDN_tongTien: sumPrice(data.detailOrderProductN).toLocaleString(

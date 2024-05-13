@@ -10,7 +10,9 @@ const User = () => {
   const [falg, setFalg] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
-
+  const handleAddUser = () => {
+    navigate("/user-add");
+  };
   const handleUserEdit = (record) => {
     navigate(`/user-edit/${record.key}`);
   };
@@ -61,7 +63,9 @@ const User = () => {
       render: (text, record) => (
         <div style={{ textAlign: "right" }}>
           {" "}
-          <Button onClick={() => handleUserEdit(record)}>Cập nhật</Button>
+          <Button onClick={() => handleUserEdit(record)} type="primary" ghost>
+            Cập nhật
+          </Button>
           <Button
             className="mx-2"
             type="primary"
@@ -113,7 +117,7 @@ const User = () => {
       {contextHolder}
       <div className="text-center title-primary pb-4">Quản lý người dùng</div>
       <div className="text-end mb-4">
-        <Button size="large" className="btn-add">
+        <Button size="large" className="btn-add" onClick={handleAddUser}>
           Tạo người dùng
           <BsPlusCircle className="fs-5 ms-2 mb-1" />
         </Button>

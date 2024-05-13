@@ -12,16 +12,24 @@ import {
   BsTruck,
 } from "react-icons/bs";
 import { MdOutlineLogout } from "react-icons/md";
+import "./Nav.scss";
+import { UserContext } from "./context/userContext";
+import React, { useContext, useEffect, useState } from "react";
 
 const { SubMenu } = Menu;
 
 const Nav = () => {
+  const { user, logout } = useContext(UserContext);
+
+  const handleLogout = () => {
+    logout();
+  };
   return (
     <Menu
       mode="inline"
       className="fs-6 menu-item mt-3"
       style={{
-        backgroundColor: "#ffffff",
+        backgroundColor: "#FFF1EB",
       }}
     >
       <SubMenu
@@ -106,8 +114,8 @@ const Nav = () => {
           Quản lý nhà cung cấp
         </Link>
       </Menu.Item>
-      <Menu.Item key="/supplier" className="py-4">
-        <Link to="/supplier" style={{ textDecoration: "none" }}>
+      <Menu.Item key="/" className="py-4">
+        <Link to="/" style={{ textDecoration: "none" }} onClick={handleLogout}>
           <MdOutlineLogout className="fs-5 mb-1 me-3" />
           Đăng xuất
         </Link>

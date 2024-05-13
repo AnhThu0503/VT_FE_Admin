@@ -98,6 +98,9 @@ function OrderN() {
   const uploadProduct = async () => {
     try {
       setLoading(true);
+      console.log("id_category_selected", id_category_selected);
+      console.log("id_supplier_selected", id_supplier_selected);
+
       const response = await axios.post("/api/admin/product", {
         id_category_selected,
         id_supplier_selected,
@@ -128,7 +131,7 @@ function OrderN() {
         setTongTien(0);
         setGiaBan(0);
         setGiaNhap(0);
-        setSoLuong(1);
+        setSoLuong(10);
         setNoiDung("");
         setFileImages([]); // Clear the file_images state
         setMoTa("");
@@ -190,47 +193,50 @@ function OrderN() {
               ></Input>
             </div>
             <div
-              className="col-sm-5 mt-4 d-flex"
+              className="col-sm-5  d-flex"
               style={{ justifyContent: "space-between" }}
             >
-              <Select
-                onChange={(value) => setIdCategorySelected(value)}
-                style={{ width: 180 }}
-                value={1}
-                size="large"
-              >
-                <Select.Option value="">Chọn danh mục</Select.Option>
-                {categorys &&
-                  categorys.map((category) => (
-                    <Select.Option
-                      key={category.DMSP_id}
-                      value={category.DMSP_id}
-                    >
-                      {category.DMSP_ten}
-                    </Select.Option>
-                  ))}
-              </Select>
-
-              <Select
-                onChange={(value) => setIdsupplierSelected(value)}
-                style={{
-                  width: 180,
-                  marginLeft: "2rem",
-                }}
-                value={1}
-                size="large"
-              >
-                <Select.Option value="">Chọn nhà cung cấp</Select.Option>
-                {suppliers &&
-                  suppliers.map((supplier) => (
-                    <Select.Option
-                      key={supplier.NCC_id}
-                      value={supplier.NCC_id}
-                    >
-                      {supplier.NCC_ten}
-                    </Select.Option>
-                  ))}
-              </Select>
+              <div>
+                <p className="ngayNhap" style={{ textAlign: "left" }}>
+                  Danh mục
+                </p>
+                <Select
+                  onChange={(value) => setIdCategorySelected(value)}
+                  style={{ width: 180 }}
+                  size="large"
+                >
+                  {categorys &&
+                    categorys.map((category) => (
+                      <Select.Option
+                        key={category.DMSP_id}
+                        value={category.DMSP_id}
+                      >
+                        {category.DMSP_ten}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </div>
+              <div>
+                <p className="ngayNhap me-4">Nhà cung cấp</p>
+                <Select
+                  onChange={(value) => setIdsupplierSelected(value)}
+                  style={{
+                    width: 180,
+                    marginLeft: "2rem",
+                  }}
+                  size="large"
+                >
+                  {suppliers &&
+                    suppliers.map((supplier) => (
+                      <Select.Option
+                        key={supplier.NCC_id}
+                        value={supplier.NCC_id}
+                      >
+                        {supplier.NCC_ten}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </div>
             </div>
           </div>
 

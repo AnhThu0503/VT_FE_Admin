@@ -3,6 +3,8 @@ import axios from "axios";
 import { Button, Select, Input } from "antd";
 import "./DiscountUpdate.scss";
 import { notification } from "antd";
+import { useNavigate } from "react-router-dom";
+
 const key = "updatable";
 
 const { TextArea } = Input;
@@ -34,6 +36,7 @@ function DiscountAdd() {
   const [id_product_selected, setIdProductSelected] = useState();
   const [is_loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAllProductSelect();
@@ -66,6 +69,7 @@ function DiscountAdd() {
         setLoading(false);
         setKM_noiDung("");
         setKM_mucGiamGia(0);
+        navigate("/discount");
       } else {
         api.open({
           key,

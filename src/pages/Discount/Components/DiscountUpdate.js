@@ -76,8 +76,7 @@ const DiscountUpdate = () => {
         KM_id: id,
         KM_noiDung: values.KM_noiDung,
         SP_id: values.SP_id,
-        KM_ngayBatDau: validateDate(values.KM_ngayBatDau),
-        KM_ngayKetThuc: validateDate(values.KM_ngayKetThuc),
+
         KM_mucGiamGia: values.KM_mucGiamGia,
         id_product_selected,
       });

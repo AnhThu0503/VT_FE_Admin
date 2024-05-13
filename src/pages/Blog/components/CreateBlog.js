@@ -87,8 +87,13 @@ const CreateBlog = () => {
           type: "error",
           message: "Tạo blog nhập thất bại!",
         });
+        setLoading(false);
+        setB_tieuDe("");
+        setValue("");
       }
     } catch (e) {
+      setLoading(false);
+
       api.open({
         key,
         type: "error",

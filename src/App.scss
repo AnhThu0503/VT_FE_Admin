@@ -2,3 +2,29 @@
     width: 270px !important;
     max-width: 270px !important;
 }
+/* Define scrollbar track */
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Màu nền của track */
+  }
+  
+  /* Define scrollbar thumb */
+  ::-webkit-scrollbar-thumb {
+    background-color: #9c9b9b; /* Màu của thumb */
+    border-radius: 10px; /* Độ cong của thumb */
+  }
+  
+  /* Define scrollbar on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #656464; /* Màu của thumb khi hover */
+  }
+  
+  /* Define scrollbar corner */
+  ::-webkit-scrollbar-corner {
+    background-color: transparent; /* Màu nền của góc scrollbar */
+  }
+  
+  /* Define scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px; /* Độ rộng của scrollbar chiều dọc */
+    height: 5px; /* Độ cao của scrollbar chiều ngang */
+  }

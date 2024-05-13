@@ -92,61 +92,97 @@ const Home = () => {
         className="d-flex col-sm-12"
         style={{ justifyContent: "space-between" }}
       >
-        <div className="col-sm-3 box d-flex ">
+        <div className="col-sm-3 box d-flex " style={{}}>
           <div
-            className="col-sm-3 pt-4 pb-4"
-            style={{ backgroundColor: "#20C2EE" }}
+            className="col-sm-7 "
+            style={{
+              border: "1px solid #20C2EE",
+              boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
+            }}
           >
-            <BsBox className="fs-2 mt-2" style={{ color: "#ffffff" }} />
-          </div>
-          <div className="col-sm-7 " style={{ border: "1px solid #20C2EE" }}>
             <p className="p-0 m-0 fs-3">{numOrders}</p>
             <p className="p-0 m-0">Đơn hàng</p>
             <Link to="/order">Chi tiết</Link>
           </div>
+          <div
+            className="col-sm-3 pt-4 pb-4"
+            style={{
+              backgroundColor: "#20C2EE",
+              boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            <BsBox className="fs-2 mt-2" style={{ color: "#ffffff" }} />
+          </div>
         </div>
         <div className="col-sm-3 box d-flex ">
           <div
-            className="col-sm-3 pt-4 pb-4"
-            style={{ backgroundColor: "#DB4B3F" }}
+            className="col-sm-7 "
+            style={{
+              border: "1px solid #DB4B3F",
+              boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
+            }}
           >
-            <BsCart3 className="fs-2 mt-2" style={{ color: "#ffffff" }} />
-          </div>
-          <div className="col-sm-7 " style={{ border: "1px solid #DB4B3F" }}>
             <p className="p-0 m-0 fs-3">{numOrdersConfirm}</p>
             <p className="p-0 m-0">Đơn hàng chờ xác nhận</p>
             <Link to="/order">Chi tiết</Link>
           </div>
+          <div
+            className="col-sm-3 pt-4 pb-4"
+            style={{
+              backgroundColor: "#DB4B3F",
+              boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            <BsCart3 className="fs-2 mt-2" style={{ color: "#ffffff" }} />
+          </div>
         </div>
         <div className="col-sm-3 box d-flex " style={{ justifyContent: "end" }}>
           <div
-            className="col-sm-3 pt-4 pb-4"
-            style={{ backgroundColor: "#18A45F" }}
+            className="col-sm-7 "
+            style={{
+              border: "1px solid #18A45F",
+              boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
+            }}
           >
-            <BsTags className="fs-2 mt-2" style={{ color: "#ffffff" }} />
-          </div>
-          <div className="col-sm-7 " style={{ border: "1px solid #18A45F" }}>
             <p className="p-0 m-0 fs-3">{numProducts}</p>
             <p className="p-0 m-0">Sản phẩm</p>
             <Link to="/product">Chi tiết</Link>
           </div>
+          <div
+            className="col-sm-3 pt-4 pb-4"
+            style={{
+              backgroundColor: "#18A45F",
+              boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            <BsTags className="fs-2 mt-2" style={{ color: "#ffffff" }} />
+          </div>
         </div>
         <div className="col-sm-3 box d-flex " style={{ justifyContent: "end" }}>
           <div
-            className="col-sm-3 pt-4 pb-4"
-            style={{ backgroundColor: "#F19B30" }}
+            className="col-sm-7 "
+            style={{
+              border: "1px solid #F19B30",
+              boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
+            }}
           >
-            <BsCalendarX className="fs-2 mt-2" style={{ color: "#ffffff" }} />
-          </div>
-          <div className="col-sm-7 " style={{ border: "1px solid #F19B30" }}>
             <p className="p-0 m-0 fs-3">{numProductsHSD}</p>
             <p className="p-0 m-0">Sản phẩm hết HSD</p>
             <Link to="/product">Chi tiết</Link>
           </div>
+          <div
+            className="col-sm-3 pt-4 pb-4"
+            style={{
+              backgroundColor: "#F19B30",
+              boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            <BsCalendarX className="fs-2 mt-2" style={{ color: "#ffffff" }} />
+          </div>
         </div>
       </div>
 
-      <div className="col-sm-12 mt-4 mb-4">
+      <div className=" ">
         <TKDoanhThu />
       </div>
     </div>

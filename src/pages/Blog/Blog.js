@@ -41,7 +41,9 @@ const Blog = () => {
       dataIndex: "",
       render: (_, record) => (
         <div style={{ textAlign: "right" }}>
-          <Button onClick={() => handleUpdateBlog(record)}>Cập nhật</Button>
+          <Button onClick={() => handleUpdateBlog(record)} type="primary" ghost>
+            Cập nhật
+          </Button>
           <Button
             className="ms-2"
             danger

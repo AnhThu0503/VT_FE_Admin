@@ -82,11 +82,13 @@ function Order() {
         console.log(response);
         api.open({
           key, // Unique key for each notification
+          type: "success",
           message: "Cập nhật trạng thái thành công",
         });
       } else {
         api.open({
           key, // Unique key for each notification
+          type: "error",
           message: "Cập nhật trạng thái thất bại",
         });
       }
@@ -272,6 +274,7 @@ function Order() {
         { text: "Chờ xác nhận", value: "Chờ xác nhận" },
         { text: "Đang vận chuyển", value: "Đang vận chuyển" },
         { text: "Hủy đơn hàng", value: "Hủy đơn hàng" },
+        { text: "Đã nhận hàng", value: "Đã nhận hàng" },
       ],
       onFilter: (value, record) => {
         console.log("FILTER value", value);

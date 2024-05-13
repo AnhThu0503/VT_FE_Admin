@@ -77,7 +77,13 @@ function Voucher() {
       render: (_, record) => (
         <div style={{ textAlign: "right" }}>
           {" "}
-          <Button onClick={() => handleUpdateDiscount(record)}>Cập nhật</Button>
+          <Button
+            onClick={() => handleUpdateDiscount(record)}
+            type="primary"
+            ghost
+          >
+            Cập nhật
+          </Button>
           <Button
             className="mx-2"
             type="primary"
