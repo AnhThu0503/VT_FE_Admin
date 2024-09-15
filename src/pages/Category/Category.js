@@ -188,7 +188,7 @@ function Category() {
       dataIndex: "",
       render: (text, record) => (
         <div style={{ textAlign: "right" }}>
-          {/* <Button
+          <Button
             className="mx-2"
             type="primary"
             onClick={() => deleteCategory(record)}
@@ -196,7 +196,7 @@ function Category() {
             ghost
           >
             Xóa
-          </Button> */}
+          </Button>
         </div>
       ),
     },
