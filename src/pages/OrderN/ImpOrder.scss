@@ -25,24 +25,24 @@
     }
 
     textarea {
-        border: 1px solid #337ab7;
+        border: 1px solid #6bad0d !important;
         border-radius: 5px;
         width: 100%;
     }
 
     input {
-        border: 1px solid #337ab7;
+        border: 1px solid #6bad0d !important;
         border-radius: 5px;
         width: 100%;
     }
 
     .btn-add {
-        background-color: #ff4d00;
+        background-color: #6bad0d !important;
         color: #fff;
 
         &:hover {
-            border: 1px solid #ff4d00 !important;
-            color: #ff4d00 !important;
+            border: 1px solid #589108!important;
+            color: #589108 !important;
             background-color: #fff !important;
         }
     }

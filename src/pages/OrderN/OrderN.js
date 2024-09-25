@@ -173,77 +173,175 @@ function OrderN() {
   return (
     <div className="container-upload pb-4">
       {contextHolder}
-      <div className="title-primary text-center">Hóa đơn nhập hàng</div>
-      <div className="row">
-        <div className="m-auto p-auto">
+      <div className="title-primary textcenter">Hóa đơn nhập hàng</div>
+      <div className="row ">
+        <div className="col-sm-5  mx-auto ">
+          <div className="title-secon">Thông tin sản phẩm</div>
+
+          <div className="pb-2" style={{ width: "100%" }}>
+            <p className="product-name" style={{ textAlign: "left" }}>
+              Tên sản phẩm
+            </p>
+            <Input
+              className="form-control"
+              type="text"
+              style={{ width: "100%" }}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            ></Input>
+          </div>
           <div
-            className="my-4 col-sm-11 m-auto d-flex"
-            style={{ justifyContent: "space-between" }}
+            className="d-flex pb-2"
+            style={{ justifyContent: "space-between", width: "100%" }}
           >
             <div className="col-sm-5">
-              <p className="ngayNhap" style={{ textAlign: "left" }}>
-                Ngày nhập hàng
+              <p className="product-name" style={{ textAlign: "left" }}>
+                Giá nhập
+              </p>
+              <Input
+                className="form-control"
+                type="number"
+                style={{ width: "100%" }}
+                value={giaNhap}
+                onChange={(e) => {
+                  setGiaNhap(e.target.value);
+                }}
+              ></Input>
+            </div>
+            <div className="col-sm-5">
+              <p className="product-name" style={{ textAlign: "left" }}>
+                Giá bán
+              </p>
+              <Input
+                className="form-control"
+                type="number"
+                style={{ width: "100%" }}
+                value={giaBan}
+                onChange={(e) => setGiaBan(e.target.value)}
+              ></Input>
+            </div>
+          </div>
+          <div
+            className="d-flex pb-2"
+            style={{ width: "100%", justifyContent: "space-between" }}
+          >
+            <div className=" col-sm-5">
+              <p className="product-NSX" style={{ textAlign: "left" }}>
+                Ngày thu hoạch
               </p>
               <Input
                 className="form-control"
                 type="date"
                 style={{ width: "100%" }}
-                value={ngayNhap}
-                onChange={(e) => setNgayNhap(e.target.value)}
+                value={NSX}
+                onChange={(e) => setNSX(e.target.value)}
               ></Input>
             </div>
-            <div
-              className="col-sm-5  d-flex"
-              style={{ justifyContent: "space-between" }}
-            >
-              <div>
-                <p className="ngayNhap" style={{ textAlign: "left" }}>
-                  Danh mục
-                </p>
-                <Select
-                  onChange={(value) => setIdCategorySelected(value)}
-                  style={{ width: 180 }}
-                  size="large"
-                >
-                  {categorys &&
-                    categorys.map((category) => (
-                      <Select.Option
-                        key={category.DMSP_id}
-                        value={category.DMSP_id}
-                      >
-                        {category.DMSP_ten}
-                      </Select.Option>
-                    ))}
-                </Select>
-              </div>
-              <div>
-                <p className="ngayNhap me-4">Nhà cung cấp</p>
-                <Select
-                  onChange={(value) => setIdsupplierSelected(value)}
-                  style={{
-                    width: 180,
-                    marginLeft: "2rem",
-                  }}
-                  size="large"
-                >
-                  {suppliers &&
-                    suppliers.map((supplier) => (
-                      <Select.Option
-                        key={supplier.NCC_id}
-                        value={supplier.NCC_id}
-                      >
-                        {supplier.NCC_ten}
-                      </Select.Option>
-                    ))}
-                </Select>
-              </div>
+            <div className=" col-sm-5">
+              <p className="product-HSD" style={{ textAlign: "left" }}>
+                Thời gian bảo quản
+              </p>
+              <Input
+                className="form-control"
+                type="date"
+                style={{ width: "100%" }}
+                value={HSD}
+                onChange={(e) => setHSD(e.target.value)}
+              ></Input>
             </div>
           </div>
+          <div style={{ width: "100%" }}>
+            <p className="product-name" style={{ textAlign: "left" }}>
+              Mô tả
+            </p>
 
+            <ReactQuill
+              modules={module}
+              theme="snow"
+              value={moTa}
+              onChange={setMoTa}
+            ></ReactQuill>
+          </div>
+          <div style={{ width: "100%" }}>
+            <Upload multiple={true} accept="image/*" onChange={onChangeFiles}>
+              <Button icon={<UploadOutlined />} size="large" className="my-3">
+                Click to Upload
+              </Button>
+            </Upload>
+          </div>
+        </div>
+        <div className="col-sm-5 mx-auto mt-4">
           <div
-            className="d-flex col-sm-11 m-auto"
+            className="d-flex pb-2"
             style={{ justifyContent: "space-between" }}
           >
+            <div className="col-sm-5">
+              <p className="ngayNhap" style={{ textAlign: "left" }}>
+                Danh mục
+              </p>
+              <Select
+                onChange={(value) => setIdCategorySelected(value)}
+                style={{ width: "100%" }}
+                size="large"
+              >
+                {categorys &&
+                  categorys.map((category) => (
+                    <Select.Option
+                      key={category.DMSP_id}
+                      value={category.DMSP_id}
+                    >
+                      {category.DMSP_ten}
+                    </Select.Option>
+                  ))}
+              </Select>
+            </div>
+            <div className="col-sm-5">
+              <p className="ngayNhap me-4">Nhà cung cấp</p>
+              <Select
+                onChange={(value) => setIdsupplierSelected(value)}
+                style={{
+                  width: "100%",
+                }}
+                size="large"
+              >
+                {suppliers &&
+                  suppliers.map((supplier) => (
+                    <Select.Option
+                      key={supplier.NCC_id}
+                      value={supplier.NCC_id}
+                    >
+                      {supplier.NCC_ten}
+                    </Select.Option>
+                  ))}
+              </Select>
+            </div>
+          </div>
+          <div className="pb-2" style={{ width: "100%" }}>
+            <p className="ngayNhap" style={{ textAlign: "left" }}>
+              Ngày nhập hàng
+            </p>
+            <Input
+              className="form-control"
+              type="date"
+              style={{ width: "100%" }}
+              value={ngayNhap}
+              onChange={(e) => setNgayNhap(e.target.value)}
+            ></Input>
+          </div>
+          <div style={{ width: "100%" }}>
+            <p className="product-name" style={{ textAlign: "left" }}>
+              Nội dung nhập hàng
+            </p>
+            <TextArea
+              cols="30"
+              rows="3"
+              title=""
+              className="col-sm-12"
+              value={noiDung}
+              onChange={(e) => setNoiDung(e.target.value)}
+            ></TextArea>
+          </div>
+          <div className="d-flex" style={{ justifyContent: "space-between" }}>
             <div className=" col-sm-5">
               <p className="product-name" style={{ textAlign: "left" }}>
                 Số lượng
@@ -271,156 +369,7 @@ function OrderN() {
               ></Input>
             </div>
           </div>
-          <div className="mb-3 col-sm-11 m-auto">
-            <p className="product-name" style={{ textAlign: "left" }}>
-              Nội dung nhập hàng
-            </p>
-            <TextArea
-              cols="30"
-              rows="3"
-              title=""
-              className="col-sm-12"
-              value={noiDung}
-              onChange={(e) => setNoiDung(e.target.value)}
-            ></TextArea>
-          </div>
-          <div
-            className="col-sm-11 m-auto my-5 pb-3"
-            style={{
-              boxShadow: "0px 0px 3px 3px #999999",
-            }}
-          >
-            <div className="py-4 title-secon">Thông tin sản phẩm</div>
-            <div
-              className="d-flex col-sm-10 mx-auto"
-              style={{ justifyContent: "space-between" }}
-            >
-              <div className="mb-3 col-sm-5 ">
-                <p className="product-name" style={{ textAlign: "left" }}>
-                  Tên sản phẩm
-                </p>
-                <Input
-                  className="form-control"
-                  type="text"
-                  style={{ width: "100%" }}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                ></Input>
-              </div>
-              <div
-                className="col-sm-5 d-flex"
-                style={{ justifyContent: "space-between" }}
-              >
-                <div className="col-sm-5">
-                  <p className="product-name" style={{ textAlign: "left" }}>
-                    Giá nhập
-                  </p>
-                  <Input
-                    className="form-control"
-                    type="number"
-                    style={{ width: "100%" }}
-                    value={giaNhap}
-                    onChange={(e) => {
-                      setGiaNhap(e.target.value);
-                    }}
-                  ></Input>
-                </div>
-                <div className="col-sm-5">
-                  <p className="product-name" style={{ textAlign: "left" }}>
-                    Giá bán
-                  </p>
-                  <Input
-                    className="form-control"
-                    type="number"
-                    style={{ width: "100%" }}
-                    value={giaBan}
-                    onChange={(e) => setGiaBan(e.target.value)}
-                  ></Input>
-                </div>
-              </div>
-            </div>
-
-            <div
-              className="d-flex col-sm-10 mb-3 mx-auto"
-              style={{ justifyContent: "space-between" }}
-            >
-              <div className=" col-sm-5">
-                <p className="product-NSX" style={{ textAlign: "left" }}>
-                  Ngày sản xuất
-                </p>
-                <Input
-                  className="form-control"
-                  type="date"
-                  style={{ width: "100%" }}
-                  value={NSX}
-                  onChange={(e) => setNSX(e.target.value)}
-                ></Input>
-              </div>
-              <div className=" col-sm-5">
-                <p className="product-HSD" style={{ textAlign: "left" }}>
-                  Hạn sử dụng
-                </p>
-                <Input
-                  className="form-control"
-                  type="date"
-                  style={{ width: "100%" }}
-                  value={HSD}
-                  onChange={(e) => setHSD(e.target.value)}
-                ></Input>
-              </div>
-            </div>
-            <div
-              className="d-flex col-sm-10 m-auto"
-              style={{ justifyContent: "space-between" }}
-            >
-              <div className="mb-3 col-sm-5">
-                <p className="product-" style={{ textAlign: "left" }}>
-                  Trọng lượng
-                </p>
-                <Input
-                  className="form-control"
-                  type="number"
-                  style={{ width: "100%" }}
-                  value={trongLuong}
-                  onChange={(e) => setTrongLuong(e.target.value)}
-                ></Input>
-              </div>
-              <div className="mb-3 col-sm-5 ">
-                <p className="product-name" style={{ textAlign: "left" }}>
-                  Đơn vị tính
-                </p>
-                <Input
-                  className="form-control"
-                  type="text"
-                  style={{ width: "100%" }}
-                  value={donViTinh}
-                  onChange={(e) => setDonViTinh(e.target.value)}
-                ></Input>
-              </div>
-            </div>
-
-            <div className="mb-3 col-sm-10 m-auto">
-              <p className="product-name" style={{ textAlign: "left" }}>
-                Mô tả
-              </p>
-
-              <ReactQuill
-                modules={module}
-                theme="snow"
-                value={moTa}
-                onChange={setMoTa}
-              ></ReactQuill>
-            </div>
-            <div className="col-sm-10 m-auto pb-3">
-              <Upload multiple={true} accept="image/*" onChange={onChangeFiles}>
-                <Button icon={<UploadOutlined />} size="large" className="my-3">
-                  Click to Upload
-                </Button>
-              </Upload>
-            </div>
-          </div>
-
-          <div className=" col-sm-11 mx-auto d-flex justify-content-end mb-3">
+          <div className="  d-flex justify-content-end mb-3">
             {!is_loading ? (
               <Button
                 className="btn btn-upload-product"

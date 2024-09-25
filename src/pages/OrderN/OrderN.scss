@@ -24,26 +24,26 @@
     }
 
     textarea {
-        border: 1px solid #337ab7;
+        border: 1px solid #6bad0d !important;
         border-radius: 5px;
         width: 100%;
     }
 
     input {
-        border: 1px solid #337ab7;
+        border: 1px solid #6bad0d !important;
         border-radius: 5px;
         width: 100%;
     }
 
     .btn-upload-product {
-        background-color: #ff4d00;
-        color: #fff;
+        background-color: #6bad0d !important;
+        color: #fff !important;
         border: none;
         border-radius: none;
 
         &:hover {
-            background-color: #e44400;
-            color: #fff;
+            background-color: #589108 !important;
+            color: #fff !important;
         }
     }
 }
