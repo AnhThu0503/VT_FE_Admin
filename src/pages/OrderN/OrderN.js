@@ -31,6 +31,7 @@ function OrderN() {
   const [NSX, setNSX] = useState();
   const [HSD, setHSD] = useState();
   const [trongLuong, setTrongLuong] = useState();
+  // eslint-disable-next-line no-unused-vars
   const [donViTinh, setDonViTinh] = useState();
   const [soLuong, setSoLuong] = useState(1);
   const [tongTien, setTongTien] = useState();
@@ -85,14 +86,6 @@ function OrderN() {
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const day = String(today.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
-  }
-
-  function formatDate(dateObject) {
-    const date = new Date(dateObject);
-    const day = String(date.getDate()).padStart(2, "0"); // Ensure two digits, pad with 0 if necessary
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is zero-indexed, so add 1
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
   }
 
   const uploadProduct = async () => {
@@ -247,6 +240,35 @@ function OrderN() {
                 style={{ width: "100%" }}
                 value={HSD}
                 onChange={(e) => setHSD(e.target.value)}
+              ></Input>
+            </div>
+          </div>
+          <div
+            className="d-flex"
+            style={{ width: "100%", justifyContent: "space-between" }}
+          >
+            <div className="mb-3 col-sm-5">
+              <p className="product-" style={{ textAlign: "left" }}>
+                Trọng lượng
+              </p>
+              <Input
+                className="form-control"
+                type="number"
+                style={{ width: "100%" }}
+                value={trongLuong}
+                onChange={(e) => setTrongLuong(e.target.value)}
+              ></Input>
+            </div>
+            <div className="mb-3 col-sm-5 ">
+              <p className="product-name" style={{ textAlign: "left" }}>
+                Đơn vị tính
+              </p>
+              <Input
+                className="form-control"
+                type="text"
+                style={{ width: "100%" }}
+                value={donViTinh}
+                onChange={(e) => setDonViTinh(e.target.value)}
               ></Input>
             </div>
           </div>
