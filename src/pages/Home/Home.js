@@ -1,5 +1,10 @@
 import "./Home.scss";
-import { BsBox, BsTags, BsPeople, BsCart3 } from "react-icons/bs";
+import {
+  BsBoxSeamFill,
+  BsCartCheckFill,
+  BsCalendar2DateFill,
+  BsFillTagsFill,
+} from "react-icons/bs";
 import TKSPBanChay from "./Components/TKSPBanChay";
 import TKSPBanCham from "./Components/TKSPBanCham";
 import { useState, useEffect } from "react";
@@ -89,95 +94,101 @@ const Home = () => {
     <div className="container-home container">
       <div className="title-primary pb-4">Thống kê</div>
       <div
-        className="d-flex col-sm-12"
+        className="d-flex col-sm-12 "
         style={{ justifyContent: "space-between" }}
       >
-        <div className="col-sm-3 box d-flex " style={{}}>
+        <div className="col-sm-3">
           <div
-            className="col-sm-7 "
+            className="box-tk py-3 px-2 d-flex "
             style={{
-              border: "1px solid #20C2EE",
               boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
+              width: "90%",
             }}
           >
-            <p className="p-0 m-0 fs-3">{numOrders}</p>
-            <p className="p-0 m-0">Đơn hàng</p>
-            <Link to="/order">Chi tiết</Link>
-          </div>
-          <div
-            className="col-sm-3 pt-4 pb-4"
-            style={{
-              backgroundColor: "#20C2EE",
-              boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <BsBox className="fs-2 mt-2" style={{ color: "#ffffff" }} />
-          </div>
-        </div>
-        <div className="col-sm-3 box d-flex ">
-          <div
-            className="col-sm-7 "
-            style={{
-              border: "1px solid #DB4B3F",
-              boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <p className="p-0 m-0 fs-3">{numOrdersConfirm}</p>
-            <p className="p-0 m-0">Đơn hàng chờ xác nhận</p>
-            <Link to="/order">Chi tiết</Link>
-          </div>
-          <div
-            className="col-sm-3 pt-4 pb-4"
-            style={{
-              backgroundColor: "#DB4B3F",
-              boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <BsCart3 className="fs-2 mt-2" style={{ color: "#ffffff" }} />
+            <div className="col-sm-3 pt-4 pb-4">
+              <BsBoxSeamFill
+                className="fs-2 mt-3"
+                style={{ color: "#20C2EE" }}
+              />
+            </div>
+            <div className="col-sm-7">
+              <p className="p-0 m-0 fs-2" style={{ color: "#20C2EE" }}>
+                {numOrders}
+              </p>
+              <p className="p-0 m-0">Đơn hàng</p>
+              <Link to="/order">Chi tiết</Link>
+            </div>
           </div>
         </div>
-        <div className="col-sm-3 box d-flex " style={{ justifyContent: "end" }}>
+        <div className="col-sm-3">
           <div
-            className="col-sm-7 "
+            className="box-tk py-3 px-2 me-2 d-flex "
             style={{
-              border: "1px solid #18A45F",
               boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
+              width: "90%",
             }}
           >
-            <p className="p-0 m-0 fs-3">{numProducts}</p>
-            <p className="p-0 m-0">Sản phẩm</p>
-            <Link to="/product">Chi tiết</Link>
-          </div>
-          <div
-            className="col-sm-3 pt-4 pb-4"
-            style={{
-              backgroundColor: "#18A45F",
-              boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <BsTags className="fs-2 mt-2" style={{ color: "#ffffff" }} />
+            <div className="col-sm-3 pt-4 pb-4">
+              <BsCartCheckFill
+                className="fs-2 mt-3"
+                style={{ color: "#DB4B3F" }}
+              />
+            </div>
+            <div className="col-sm-7">
+              <p className="p-0 m-0 fs-2" style={{ color: "#DB4B3F" }}>
+                {numOrdersConfirm}
+              </p>
+              <p className="p-0 m-0">Đơn hàng chờ xác nhận</p>
+              <Link to="/order">Chi tiết</Link>
+            </div>
           </div>
         </div>
-        <div className="col-sm-3 box d-flex " style={{ justifyContent: "end" }}>
+
+        <div className="col-sm-3">
           <div
-            className="col-sm-7 "
+            className="box-tk py-3 px-2 me-2 d-flex "
             style={{
-              border: "1px solid #F19B30",
               boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
+              width: "90%",
             }}
           >
-            <p className="p-0 m-0 fs-3">{numProductsHSD}</p>
-            <p className="p-0 m-0">Sản phẩm hết HSD</p>
-            <Link to="/product">Chi tiết</Link>
+            <div className="col-sm-3 pt-4 pb-4">
+              <BsFillTagsFill
+                className="fs-2 mt-3"
+                style={{ color: "#18A45F" }}
+              />
+            </div>
+            <div className="col-sm-7">
+              <p className="p-0 m-0 fs-2" style={{ color: "#18A45F" }}>
+                {numProducts}
+              </p>
+              <p className="p-0 m-0">Sản phẩm</p>
+              <Link to="/product">Chi tiết</Link>
+            </div>
           </div>
+        </div>
+
+        <div className="col-sm-3">
           <div
-            className="col-sm-3 pt-4 pb-4"
+            className=" box-tk py-3 px-2 me-2 d-flex "
             style={{
-              backgroundColor: "#F19B30",
               boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
+              width: "90%",
             }}
           >
-            <BsCalendarX className="fs-2 mt-2" style={{ color: "#ffffff" }} />
+            <div className="col-sm-3 pt-4 pb-4">
+              <BsCalendar2DateFill
+                className="fs-2 mt-3"
+                style={{ color: "#F19B30" }}
+              />
+            </div>
+            <div className="col-sm-7">
+              <p className="p-0 m-0 fs-2" style={{ color: "#F19B30" }}>
+                {numProducts}
+              </p>
+              <p className="p-0 m-0">Sản phẩm hết HSD</p>
+              <Link to="/product">Chi tiết</Link>
+            </div>
           </div>
         </div>
       </div>

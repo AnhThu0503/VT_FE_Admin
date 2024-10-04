@@ -81,10 +81,10 @@ const TKDoanhThu = () => {
   };
   return (
     <div
-      className="container-doanhthu d-flex mt-4"
+      className="container-doanhthu d-flex mt-4 pt-2"
       style={{ justifyContent: "space-between" }}
     >
-      <div className="col-sm-2">
+      <div className="col-sm-2 ">
         <div className="">
           <p className="startDate p-0 mb-2" style={{ textAlign: "left" }}>
             Ngày bắt đầu
@@ -116,9 +116,10 @@ const TKDoanhThu = () => {
         </div>
       </div>
       <div
-        className=" col-sm-9 "
+        className=" col-sm-9 p-4 me-4"
         style={{
           maxHeight: "520px",
+          backgroundColor: "#ffffff",
           height: "520px",
           boxShadow: "7px 7px 7px rgba(0, 0, 0, 0.2)",
         }}

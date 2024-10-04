@@ -27,6 +27,9 @@ import TKSPTonKho from "./pages/Home/Components/TKSPTonKho";
 import UserAdd from "./pages/User/components/UserAdd";
 import Login from "./pages/Login/Login";
 import TKDoanhThu from "./pages/Home/Components/TKDoanhThu";
+import { Avatar, Space } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+
 const { Content, Sider } = Layout;
 
 const App = () => {
@@ -53,7 +56,7 @@ const App = () => {
   return (
     <BrowserRouter>
       {haveLogin ? (
-        <Layout hasSider>
+        <Layout hasSider style={{ height: "100vh" }}>
           <Sider
             style={{
               overflow: "auto",
@@ -62,7 +65,7 @@ const App = () => {
               left: 0,
               top: 0,
               bottom: 0,
-              backgroundColor: "#FFF1EB",
+              backgroundColor: "#d6eadf",
               minWidth: "200px",
               padding: "10px",
             }}
@@ -82,8 +85,14 @@ const App = () => {
                 borderBottom: "1px solid #DCDCDC",
               }}
             >
-              {" "}
-              <BsPersonCircle className="fs-5 mb-2" /> Admin
+              <Avatar
+                className="fs-5 mb-2 me-2"
+                // style={{
+                //   backgroundColor: "#87d068",
+                // }}
+                icon={<UserOutlined />}
+              />
+              Admin
             </div>
 
             <Nav />
@@ -103,7 +112,6 @@ const App = () => {
                 style={{
                   padding: 24,
                   textAlign: "center",
-                  background: colorBgContainer,
                   borderRadius: borderRadiusLG,
                 }}
               >

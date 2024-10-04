@@ -29,7 +29,7 @@ const Nav = () => {
       mode="inline"
       className="fs-6 menu-item mt-3"
       style={{
-        backgroundColor: "#FFF1EB",
+        backgroundColor: "#d6eadf",
       }}
     >
       <SubMenu
@@ -65,7 +65,7 @@ const Nav = () => {
       <Menu.Item key="/blog" className="py-4">
         <Link to="/blog" style={{ textDecoration: "none" }}>
           <BsCardHeading className="fs-5 mb-1 me-3" />
-          Quản lý Blog
+          Quản lý tin tức
         </Link>
       </Menu.Item>
       <Menu.Item key="/discount" className="py-4">
